@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using corrsDashboard.IRepositories;
 using corrsDashboard.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,6 +35,7 @@ namespace corrsDashboard.Controllers
         //}
         [HttpPost]
         [Route("Displaymissedorders")]
+        [EnableCors("AllowOrigin")]
         public dynamic Displaymissedorders(string plantid, int metricid, int week)
         {
 
