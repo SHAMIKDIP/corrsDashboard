@@ -17,16 +17,16 @@ namespace corrsDashboard.Controllers
     {
         private readonly IShopFloorComformance _ishopfloorcomformance;
         private readonly corrsdatabaseContext _context;
-       //public var orders;
-       // public var reason;
-        
+        //public var orders;
+        // public var reason;
+
         public ShopFloorComformanceController(IShopFloorComformance ishopfloorcomformance, corrsdatabaseContext context)
         {
             _ishopfloorcomformance = ishopfloorcomformance;
             _context = context;
 
         }
-        
+
         //[Route("Displaymissedorders")]
         //public dynamic Displaymissedorders(string plantid, int metricid, int week)
         //{
@@ -52,21 +52,21 @@ namespace corrsDashboard.Controllers
      x.FinishDateConfirmed,
      x.FinishDateScheduled
  }).ToArray();
-            var reason = _context.Metricbasedreasoncodeview.Where(p => p.MetricId == metricid).Select(c => new
-            {
-                c.ReasonCode
-            }).ToArray();
+                    var reason = _context.Metricbasedreasoncodeview.Where(p => p.MetricId == metricid).Select(c => new
+                    {
+                        c.ReasonCode
+                    }).ToArray();
 
-                  
+
                     return (orders, reason);
                     break;
             }
             return null;
 
 
-            }
+        }
 
-            public IActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
