@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using corrsDashboard.IRepositories;
 using corrsDashboard.Models;
 using Microsoft.AspNetCore.Cors;
@@ -32,8 +33,13 @@ namespace corrsDashboard.Controllers
         //}
         [HttpPost]
         [Route("Displaymissedorders")]
-        public dynamic Displaymissedorders(string plantid, int metricid, int week)
+
+
+        public dynamic Displaymissedorders([FromBody] orderdetails od )
         {
+            string plantid = od.plantid;
+            int metricid = od.metricid;
+            int week = od.week;
 
             switch (metricid)
             {
@@ -41,23 +47,59 @@ namespace corrsDashboard.Controllers
                     break;
                 case 5:
                     var orders = _context.ShopFloorComformance.Where(b => b.PlantId == plantid && (b.Week == week && b.Flag == "Miss"))
- .Select(x => new
- {
-     x.OrderQuantity,
-     x.MaterialId,
-     x.MaterialName,
-     x.OrderQuantityUnit,
-     x.FinishDateConfirmed,
-     x.FinishDateScheduled
- }).ToArray();
+                     .Select(x => new
+                     {
+                         x.ResourceName,
+                         x.PlantName,
+                         x.PlantId,
+                         x.ProcessOrder,
+                         x.OrderQuantity,
+                         x.MaterialId,
+                         x.MaterialName,
+                         x.OrderQuantityUnit,
+                         x.Flag,
+                         x.FinishDateConfirmed,
+                         x.FinishDateScheduled
+                     }).ToArray();
                     var reason = _context.Metricbasedreasoncodeview.Where(p => p.MetricId == metricid).Select(q => new
                     {
-                        q.ReasonCode
+                        q.ReasonCode,
+                        q.ReasonCodeId
                     }).ToArray();
 
+                    //var reasoncode = (from p in _context.ShopFloorComformance
+                    // join e in _context.ReasonCodes
+                    // on p.ReasonCode equals e.ReasonCode
+                    //          select new
+                    // {
+                    //     e.ReasonCode
+                    // }).ToArray();
 
-                    return new Array[] {orders,reason };
+
+                    var reasoncode = (from p in _context.ShopFloorComformance
+                                      join e in _context.ReasonCodes
+                                      on p.ReasonCode equals e.ReasonCode
+                                      //where p.PlantId == plantid && p.Week == week && p.Flag == "Miss"
+                                      select new
+                                      {
+                                          e.ReasonCode,
+                                          //p.ResourceName,
+                                          //p.PlantName,
+                                          //p.PlantId,
+                                          //p.ProcessOrder,
+                                          //p.OrderQuantity,
+                                          //p.MaterialId,
+                                          //p.MaterialName,
+                                          //p.OrderQuantityUnit,
+                                          //p.Flag,
+                                          //p.FinishDateConfirmed,
+                                          //p.FinishDateScheduled
+                                      }).ToArray();
+
+
+
                     
+                    return new Array[] { orders, reason, reasoncode };
 
                     break;
             }

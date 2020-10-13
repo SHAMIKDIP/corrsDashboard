@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using corrsDashboard.IRepositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,7 @@ namespace corrsDashboard.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    
+    [EnableCors("AllowOrigin")]
     public class MetricsviewController : ControllerBase
     {
         private readonly IMetricsview _imetricsview;
