@@ -51,12 +51,12 @@ namespace corrsDashboard
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(options => options.AllowAnyOrigin());
+           // app.UseCors(options => options.AllowAnyOrigin());
             app.UseHttpsRedirection();
             // app.UseMvc();
-
+           
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
