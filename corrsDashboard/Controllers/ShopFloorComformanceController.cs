@@ -14,6 +14,7 @@ namespace corrsDashboard.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+   // [EnableCors("AllowOrigin")]
     public class ShopFloorComformanceController : Controller
     {
         private readonly IShopFloorComformance _ishopfloorcomformance;
@@ -35,7 +36,7 @@ namespace corrsDashboard.Controllers
         //}
         [HttpPost]
         [Route("Displaymissedorders")]
-        [EnableCors("AllowOrigin")]
+        
         public dynamic Displaymissedorders(string plantid, int metricid, int week)
         {
 

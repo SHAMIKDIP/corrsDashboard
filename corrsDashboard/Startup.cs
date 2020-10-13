@@ -34,7 +34,7 @@ namespace corrsDashboard
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
             services.AddMvc();
-            services.AddControllers().AddNewtonsoftJson();
+           // services.AddControllers().AddNewtonsoftJson();
             var connection = Configuration.GetConnectionString("databaseconnection");
             //services.AddDbContextPool<corrsdatabaseContext>(options => options.UseNpgsql(connection));
             services.AddDbContext<corrsdatabaseContext>(options => options.UseNpgsql(connection));
