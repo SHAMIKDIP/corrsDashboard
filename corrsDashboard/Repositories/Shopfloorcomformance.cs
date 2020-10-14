@@ -16,7 +16,20 @@ namespace corrsDashboard.Repositories
             db = _db;
         }
 
-       
+        //public ShopFloorComformance GetDetailsByIds(string resource, long processorder)
+        //{
+        //    return db.ShopFloorComformance.FirstOrDefault(s => s.Resource == resource && s.ProcessOrder == processorder);
+        //}
+
+        //public void UpdateShopFloorComformance(ShopFloorComformance shopFloor)
+        //{
+        //    db.ShopFloorComformance.Update(shopFloor);
+
+        //    db.SaveChanges();
+
+        //}
+
+
 
         //public dynamic Displaymissedorders(string plantid, int metricid, int week)
         //{

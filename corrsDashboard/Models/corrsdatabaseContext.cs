@@ -6,9 +6,9 @@ namespace corrsDashboard.Models
 {
     public partial class corrsdatabaseContext : DbContext
     {
-        public corrsdatabaseContext()
-        {
-        }
+        //public corrsdatabaseContext()
+        //{
+        //}
 
         public corrsdatabaseContext(DbContextOptions<corrsdatabaseContext> options)
             : base(options)
@@ -33,14 +33,14 @@ namespace corrsDashboard.Models
         public virtual DbSet<ShopFloorComformance> ShopFloorComformance { get; set; }
         public virtual DbSet<Shopfloorcomformanceview> Shopfloorcomformanceview { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Server=corrsserver.postgres.database.azure.com;Database=corrsdatabase;Username=sqladmin@corrsserver;Password=Infy@12345;Integrated Security=True;SslMode=Require");
-            }
-        }
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseNpgsql("Server=corrsserver.postgres.database.azure.com;Database=corrsdatabase;Username=sqladmin@corrsserver;Password=Infy@12345;Integrated Security=True;SslMode=Require");
+//            }
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
