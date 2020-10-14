@@ -99,31 +99,36 @@ namespace corrsDashboard.Controllers
 
         }
 
-        //[HttpPut]
-        //[Route("UpdateShopFloor")]
-        //public IActionResult Edit([FromBody] ShopFloor shopFloor)
-        //{
-        //    switch (shopFloor.metricid)
-        //    {
-        //        case 1:
-        //            break;
-        //        case 5:
-        //            var data = _shopfloorcomformance.GetDetailsByIds(shopFloor.Resource, shopFloor.ProcessOrder);
-        //            if (data != null)
-        //            {
-        //                data.Flag = shopFloor.Flag;
-        //                data.ReasonCodeId = shopFloor.ReasonCodeId;
-        //                if (ModelState.IsValid)
-        //                {
-        //                    _shopfloorcomformance.UpdateShopFloorComformance(data);
-        //                    return Ok();
-        //                }
-        //            }
-        //            break;
-        //    }
-        //    return BadRequest();
-        //}
+        [HttpPut]
+        [Route("UpdateShopFloor")]
+        public IActionResult Edit([FromBody] ShopFloorMetricDetails shopFloor)
+        {
+            foreach (var item in shopFloor.shopFloorMetricDetails)
+            {
+                switch (item.MetricId)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 5:
+                        var data = _ishopfloorcomformance.GetDetailsByIDs(item.Resource, item.ProcessOrder);
+                        if (data != null)
+                        {
+                            data.Flag = item.Flag;
+                            data.ReasonCodeId = item.ReasonCodeId;
+                            //_context.Entry(data).State = EntityState.Detached;
 
+                            if (ModelState.IsValid)
+                            {
+                                _ishopfloorcomformance.UpdateShopFloorComformance(data);
+                            }
+                        }
+                        break;
+                }
+            }
+            return Ok();
+        }
 
         public IActionResult Index()
         {

@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 
 namespace corrsDashboard.Models
 {
-    public class ShopFloor
+    public class ShopFloorMetric
     {
-        [JsonProperty("processOrder")]
-        public long ProcessOrder { get; set; }
-
         [JsonProperty("Resource")]
         public string Resource { get; set; }
+
+        [JsonProperty("MetricId")]
+        public int MetricId { get; set; }
+
         [JsonProperty("Flag")]
         public string Flag { get; set; }
+
+        [JsonProperty("ProcessOrder")]
+        public long ProcessOrder { get; set; }
+
         [JsonProperty("ReasonCodeId")]
         public int? ReasonCodeId { get; set; }
-        [JsonProperty("metricid")]
-        public int metricid { get; set; }
-
+    }
+    public class ShopFloorMetricDetails
+    {
+        public List<ShopFloorMetric> shopFloorMetricDetails { get; set; }
     }
 }
