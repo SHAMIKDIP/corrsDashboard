@@ -14,7 +14,8 @@ namespace corrsDashboard.Controllers
     [EnableCors("AllowOrigin")]
     public class MetricsviewController : ControllerBase
     {
-        private readonly IMetricsview _imetricsview;
+        private readonly IMetricsview _imetricsview; 
+
         public MetricsviewController(IMetricsview imetricsview)
         {
             _imetricsview = imetricsview;

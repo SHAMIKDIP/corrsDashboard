@@ -30,9 +30,9 @@ namespace corrsDashboard.Models
         public DateTime? DateUpdated { get; set; }
         public int? Month { get; set; }
         public string Quarter { get; set; }
-        public string ReasonCode { get; set; }
+        public int? ReasonCodeId { get; set; }
 
         public virtual Corrsplants Plant { get; set; }
-        public virtual ReasonCodes ReasonCodeNavigation { get; set; }
+        public virtual ReasonCodes ReasonCode { get; set; }
     }
 }

@@ -16,28 +16,30 @@ namespace corrsDashboard.Repositories
             db = _db;
         }
 
-        public dynamic Displaymissedorders(string plantid, int metricid, int week)
-        {
-            switch(metricid)
-            {
-                case 5:
-                    return db.ShopFloorComformance.Where(b => b.PlantId == plantid && (b.Week == week && b.Flag == "Miss"))
-        .Select(x => new
-        {
-            x.OrderQuantity,
-            x.MaterialId,
-            x.MaterialName,
-            x.OrderQuantityUnit,
-            x.FinishDateConfirmed,
-            x.FinishDateScheduled
-        }).ToArray();
+       
 
-                 break;
+        //public dynamic Displaymissedorders(string plantid, int metricid, int week)
+        //{
+        //    switch(metricid)
+        //    {
+        //        case 5:
+        //            return db.ShopFloorComformance.Where(b => b.PlantId == plantid && (b.Week == week && b.Flag == "Miss"))
+        //.Select(x => new
+        //{
+        //    x.OrderQuantity,
+        //    x.MaterialId,
+        //    x.MaterialName,
+        //    x.OrderQuantityUnit,
+        //    x.FinishDateConfirmed,
+        //    x.FinishDateScheduled
+        //}).ToArray();
 
-            }
-            return null;
-        }
+        //         break;
 
-        
+        //    }
+        //    return null;
+        //}
+
+
     }
 }

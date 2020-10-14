@@ -33,14 +33,14 @@ namespace corrsDashboard.Models
         public virtual DbSet<ShopFloorComformance> ShopFloorComformance { get; set; }
         public virtual DbSet<Shopfloorcomformanceview> Shopfloorcomformanceview { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseNpgsql("Server=corrsserver.postgres.database.azure.com;Database=corrsdatabase;Username=sqladmin@corrsserver;Password=Infy@12345;Integrated Security=True;SslMode=Require");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseNpgsql("Server=corrsserver.postgres.database.azure.com;Database=corrsdatabase;Username=sqladmin@corrsserver;Password=Infy@12345;Integrated Security=True;SslMode=Require");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -240,6 +240,8 @@ namespace corrsDashboard.Models
                 entity.Property(e => e.DateCreated).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.DateUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Flag).HasDefaultValueSql("1");
 
                 entity.Property(e => e.PlantDomain)
                     .IsRequired()
@@ -451,8 +453,8 @@ namespace corrsDashboard.Models
 
                 entity.ToTable("ShopFloorComformance", "corrs");
 
-                entity.HasIndex(e => e.ReasonCode)
-                    .HasName("fki_fk_reasoncode");
+                entity.HasIndex(e => e.ReasonCodeId)
+                    .HasName("fki_fk_reasoncodeid");
 
                 entity.HasIndex(e => e.Week)
                     .HasName("fki_fk_week");
@@ -493,8 +495,6 @@ namespace corrsDashboard.Models
 
                 entity.Property(e => e.Quarter).HasMaxLength(20);
 
-                entity.Property(e => e.ReasonCode).HasMaxLength(200);
-
                 entity.Property(e => e.ResourceName)
                     .IsRequired()
                     .HasMaxLength(255);
@@ -506,11 +506,10 @@ namespace corrsDashboard.Models
                     .HasForeignKey(d => d.PlantId)
                     .HasConstraintName("fk_plantcode");
 
-                entity.HasOne(d => d.ReasonCodeNavigation)
+                entity.HasOne(d => d.ReasonCode)
                     .WithMany(p => p.ShopFloorComformance)
-                    .HasPrincipalKey(p => p.ReasonCode)
-                    .HasForeignKey(d => d.ReasonCode)
-                    .HasConstraintName("fk_reasoncode");
+                    .HasForeignKey(d => d.ReasonCodeId)
+                    .HasConstraintName("fk_reasoncodeid");
             });
 
             modelBuilder.Entity<Shopfloorcomformanceview>(entity =>

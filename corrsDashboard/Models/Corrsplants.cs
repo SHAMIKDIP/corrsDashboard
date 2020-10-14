@@ -17,6 +17,7 @@ namespace corrsDashboard.Models
         public DateTime? DateUpdated { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
+        public int? Flag { get; set; }
 
         public virtual Corrsplantdomains PlantDomainNavigation { get; set; }
         public virtual ICollection<ShopFloorComformance> ShopFloorComformance { get; set; }

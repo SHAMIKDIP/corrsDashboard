@@ -34,9 +34,9 @@ namespace corrsDashboard.Controllers
         [HttpPost]
         [Route("Displaymissedorders")]
 
-
         public dynamic Displaymissedorders([FromBody] orderdetails od )
         {
+           // [FromBody] orderdetails od
             string plantid = od.plantid;
             int metricid = od.metricid;
             int week = od.week;
@@ -49,17 +49,15 @@ namespace corrsDashboard.Controllers
                     var orders = _context.ShopFloorComformance.Where(b => b.PlantId == plantid && (b.Week == week && b.Flag == "Miss"))
                      .Select(x => new
                      {
-                         x.ResourceName,
-                         x.PlantName,
-                         x.PlantId,
-                         x.ProcessOrder,
-                         x.OrderQuantity,
-                         x.MaterialId,
-                         x.MaterialName,
-                         x.OrderQuantityUnit,
-                         x.Flag,
                          x.FinishDateConfirmed,
-                         x.FinishDateScheduled
+                         x.FinishDateScheduled,
+                         x.Resource,
+                         x.Flag,
+                         x.MaterialId,
+                         x.OrderQuantity,
+                         x.ProcessOrder,
+                         x.PlantId,
+                         
                      }).ToArray();
                     var reason = _context.Metricbasedreasoncodeview.Where(p => p.MetricId == metricid).Select(q => new
                     {
@@ -67,33 +65,27 @@ namespace corrsDashboard.Controllers
                         q.ReasonCodeId
                     }).ToArray();
 
-                    //var reasoncode = (from p in _context.ShopFloorComformance
-                    // join e in _context.ReasonCodes
-                    // on p.ReasonCode equals e.ReasonCode
-                    //          select new
-                    // {
-                    //     e.ReasonCode
-                    // }).ToArray();
-
-
-                    var reasoncode = (from p in _context.ShopFloorComformance
-                                      join e in _context.ReasonCodes
-                                      on p.ReasonCode equals e.ReasonCode
-                                      //where p.PlantId == plantid && p.Week == week && p.Flag == "Miss"
+                    
+                    var reasoncode = (from e in _context.ReasonCodes
+                                      join p in _context.ShopFloorComformance
+                                      on e.ReasonCodeId equals p.ReasonCodeId
+                                      where p.PlantId == plantid && p.Week == week && p.Flag == "Miss"
                                       select new
                                       {
+                                          
                                           e.ReasonCode,
-                                          //p.ResourceName,
-                                          //p.PlantName,
-                                          //p.PlantId,
-                                          //p.ProcessOrder,
-                                          //p.OrderQuantity,
-                                          //p.MaterialId,
-                                          //p.MaterialName,
-                                          //p.OrderQuantityUnit,
-                                          //p.Flag,
-                                          //p.FinishDateConfirmed,
-                                          //p.FinishDateScheduled
+                                          p.ReasonCodeId,
+                                          p.ResourceName,
+                                          p.PlantName,
+                                          p.PlantId,
+                                          p.ProcessOrder,
+                                          p.OrderQuantity,
+                                          p.MaterialId,
+                                          p.MaterialName,
+                                          p.OrderQuantityUnit,
+                                          p.Flag,
+                                          p.FinishDateConfirmed,
+                                          p.FinishDateScheduled
                                       }).ToArray();
 
 
@@ -107,6 +99,8 @@ namespace corrsDashboard.Controllers
 
         }
 
+
+        
         public IActionResult Index()
         {
             return View();
