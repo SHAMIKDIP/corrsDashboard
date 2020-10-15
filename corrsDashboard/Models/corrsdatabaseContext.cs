@@ -129,8 +129,6 @@ namespace corrsDashboard.Models
 
             modelBuilder.Entity<Corrsmetricreasoncodedependency>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("corrsmetricreasoncodedependency", "corrs");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(100);
@@ -142,13 +140,13 @@ namespace corrsDashboard.Models
                 entity.Property(e => e.UpdatedBy).HasMaxLength(100);
 
                 entity.HasOne(d => d.Metric)
-                    .WithMany()
+                    .WithMany(p => p.Corrsmetricreasoncodedependency)
                     .HasForeignKey(d => d.MetricId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_metricId");
 
                 entity.HasOne(d => d.Reason)
-                    .WithMany()
+                    .WithMany(p => p.Corrsmetricreasoncodedependency)
                     .HasForeignKey(d => d.ReasonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_reasoncodeid");
@@ -196,8 +194,6 @@ namespace corrsDashboard.Models
 
             modelBuilder.Entity<Corrsplantmetricdependency>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("corrsplantmetricdependency", "corrs");
 
                 entity.HasIndex(e => e.PlantDomain)
@@ -214,12 +210,12 @@ namespace corrsDashboard.Models
                 entity.Property(e => e.UpdatedBy).HasMaxLength(100);
 
                 entity.HasOne(d => d.MetricCodeNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Corrsplantmetricdependency)
                     .HasForeignKey(d => d.MetricCode)
                     .HasConstraintName("fk_metricid");
 
                 entity.HasOne(d => d.PlantDomainNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Corrsplantmetricdependency)
                     .HasForeignKey(d => d.PlantDomain)
                     .HasConstraintName("fk_plantdomain");
             });
@@ -440,6 +436,8 @@ namespace corrsDashboard.Models
 
                 entity.Property(e => e.DateUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                entity.Property(e => e.Flag).HasDefaultValueSql("1");
+
                 entity.Property(e => e.ReasonCode)
                     .IsRequired()
                     .HasMaxLength(200);
@@ -564,9 +562,9 @@ namespace corrsDashboard.Models
 
             modelBuilder.Entity<Smpoi>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("SMPOI", "corrs");
+
+                entity.Property(e => e.Id).HasMaxLength(50);
 
                 entity.Property(e => e.AdjustedExpirationDate).HasColumnType("date");
 
@@ -598,11 +596,7 @@ namespace corrsDashboard.Models
 
                 entity.Property(e => e.Expiration).HasMaxLength(255);
 
-                entity.Property(e => e.ExpirationDate1)
-                    .HasColumnName("ExpirationDate")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.Expirationdate).HasColumnType("date");
+                entity.Property(e => e.ExpirationDate).HasColumnType("date");
 
                 entity.Property(e => e.FormLabelExpDate).HasMaxLength(255);
 
@@ -709,7 +703,7 @@ namespace corrsDashboard.Models
                 entity.Property(e => e.Vendor).HasMaxLength(255);
 
                 entity.HasOne(d => d.Plant)
-                    .WithMany()
+                    .WithMany(p => p.Smpoi)
                     .HasForeignKey(d => d.PlantId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_plantcode");

@@ -8,6 +8,8 @@ namespace corrsDashboard.Models
         public Corrsmetrics()
         {
             Configurationmaster = new HashSet<Configurationmaster>();
+            Corrsmetricreasoncodedependency = new HashSet<Corrsmetricreasoncodedependency>();
+            Corrsplantmetricdependency = new HashSet<Corrsplantmetricdependency>();
         }
 
         public int MetricId { get; set; }
@@ -20,5 +22,7 @@ namespace corrsDashboard.Models
         public string UpdatedBy { get; set; }
 
         public virtual ICollection<Configurationmaster> Configurationmaster { get; set; }
+        public virtual ICollection<Corrsmetricreasoncodedependency> Corrsmetricreasoncodedependency { get; set; }
+        public virtual ICollection<Corrsplantmetricdependency> Corrsplantmetricdependency { get; set; }
     }
 }

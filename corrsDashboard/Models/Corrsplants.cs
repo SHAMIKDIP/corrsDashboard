@@ -8,6 +8,7 @@ namespace corrsDashboard.Models
         public Corrsplants()
         {
             ShopFloorComformance = new HashSet<ShopFloorComformance>();
+            Smpoi = new HashSet<Smpoi>();
         }
 
         public string PlantId { get; set; }
@@ -21,5 +22,6 @@ namespace corrsDashboard.Models
 
         public virtual Corrsplantdomains PlantDomainNavigation { get; set; }
         public virtual ICollection<ShopFloorComformance> ShopFloorComformance { get; set; }
+        public virtual ICollection<Smpoi> Smpoi { get; set; }
     }
 }

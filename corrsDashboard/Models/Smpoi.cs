@@ -5,6 +5,7 @@ namespace corrsDashboard.Models
 {
     public partial class Smpoi
     {
+        public string Id { get; set; }
         public string PlantId { get; set; }
         public string PlantName { get; set; }
         public string PlantCountry { get; set; }
@@ -23,7 +24,6 @@ namespace corrsDashboard.Models
         public string StorageLocation { get; set; }
         public string BatchNo { get; set; }
         public string FormLabelExpDate { get; set; }
-        public DateTime? Expirationdate { get; set; }
         public DateTime? AdjustedExpirationDate { get; set; }
         public string InventoryCategorization { get; set; }
         public DateTime? LastMovementDate { get; set; }
@@ -39,7 +39,7 @@ namespace corrsDashboard.Models
         public DateTime? Grdate { get; set; }
         public string Vendor { get; set; }
         public string EMCindicator { get; set; }
-        public DateTime? ExpirationDate1 { get; set; }
+        public DateTime? ExpirationDate { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? ManufacturingDate { get; set; }
         public string Expiration { get; set; }

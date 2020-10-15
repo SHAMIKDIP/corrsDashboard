@@ -7,6 +7,7 @@ namespace corrsDashboard.Models
     {
         public ReasonCodes()
         {
+            Corrsmetricreasoncodedependency = new HashSet<Corrsmetricreasoncodedependency>();
             ShopFloorComformance = new HashSet<ShopFloorComformance>();
         }
 
@@ -18,6 +19,7 @@ namespace corrsDashboard.Models
         public string UpdatedBy { get; set; }
         public int ReasonCodeId { get; set; }
 
+        public virtual ICollection<Corrsmetricreasoncodedependency> Corrsmetricreasoncodedependency { get; set; }
         public virtual ICollection<ShopFloorComformance> ShopFloorComformance { get; set; }
     }
 }

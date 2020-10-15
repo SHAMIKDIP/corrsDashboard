@@ -11,4 +11,8 @@ namespace corrsDashboard.Models
         public int? MetricId { get; set; }
         public string MetricName { get; set; }
     }
+    public class MetricbasedreasoncodeDetails
+    {
+        public List<Metricbasedreasoncodeview> MetricbasedreasoncodeviewDetails { get; set; }
+    }
 }
