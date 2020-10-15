@@ -7,6 +7,7 @@ namespace corrsDashboard.Models
     {
         public string ReasonCode { get; set; }
         public int? ReasonCodeId { get; set; }
+        public int? Flag { get; set; }
         public int? MetricId { get; set; }
         public string MetricName { get; set; }
     }

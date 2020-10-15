@@ -42,6 +42,7 @@ namespace corrsDashboard
             services.AddScoped<ICorrsplants,corrsplantscs>();
             services.AddScoped<IMetricsview,metricsview>();
             services.AddScoped<IShopFloorComformance,Shopfloorcomformance>();
+            services.AddScoped<IAddreasoncode,Addreasoncode>();
             //services.AddControllers();
         }
 

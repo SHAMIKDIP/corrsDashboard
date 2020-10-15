@@ -20,26 +20,26 @@ namespace corrsDashboard.Controllers
         {
             _corrsPlants = corrsPlants;
         }
-        [HttpGet]
-        [Route("GetCategories")]
-        public async Task<IActionResult> GetCategories()
-        {
-            try
-            {
-                var categories = await _corrsPlants.GetCategories();
-                if (categories == null)
-                {
-                    return NotFound();
-                }
+        //[HttpGet]
+        //[Route("GetCategories")]
+        //public async Task<IActionResult> GetCategories()
+        //{
+        //    try
+        //    {
+        //        var categories = await _corrsPlants.GetCategories();
+        //        if (categories == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                return Ok(categories);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+        //        return Ok(categories);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest();
+        //    }
 
-        }
+        //}
 
         [HttpGet]
         [Route("GetAllPlantID")]

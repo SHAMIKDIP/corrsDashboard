@@ -10,7 +10,7 @@ namespace corrsDashboard.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [EnableCors("AllowOrigin")]
+    
     public class AddReasonCodeController : Controller
     {
         private readonly IAddreasoncode _iaddreasoncode;

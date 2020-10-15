@@ -6,9 +6,9 @@ namespace corrsDashboard.Models
 {
     public partial class corrsdatabaseContext : DbContext
     {
-        //public corrsdatabaseContext()
-        //{
-        //}
+        public corrsdatabaseContext()
+        {
+        }
 
         public corrsdatabaseContext(DbContextOptions<corrsdatabaseContext> options)
             : base(options)
@@ -32,15 +32,16 @@ namespace corrsDashboard.Models
         public virtual DbSet<ReasonCodes> ReasonCodes { get; set; }
         public virtual DbSet<ShopFloorComformance> ShopFloorComformance { get; set; }
         public virtual DbSet<Shopfloorcomformanceview> Shopfloorcomformanceview { get; set; }
+        public virtual DbSet<Smpoi> Smpoi { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseNpgsql("Server=corrsserver.postgres.database.azure.com;Database=corrsdatabase;Username=sqladmin@corrsserver;Password=Infy@12345;Integrated Security=True;SslMode=Require");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseNpgsql("Server=corrsserver.postgres.database.azure.com;Database=corrsdatabase;Username=sqladmin@corrsserver;Password=Infy@12345;Integrated Security=True;SslMode=Require");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -559,6 +560,159 @@ namespace corrsDashboard.Models
                 entity.Property(e => e.Resource).HasMaxLength(50);
 
                 entity.Property(e => e.ResourceName).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<Smpoi>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("SMPOI", "corrs");
+
+                entity.Property(e => e.AdjustedExpirationDate).HasColumnType("date");
+
+                entity.Property(e => e.Aiuom)
+                    .HasColumnName("AIUOM")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.BaseUom)
+                    .HasColumnName("BaseUOM")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.BatchNo).HasMaxLength(255);
+
+                entity.Property(e => e.Bommaterials)
+                    .HasColumnName("BOMMaterials")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("date");
+
+                entity.Property(e => e.DateCreated).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.DateUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.EMCindicator)
+                    .HasColumnName("E/M/CIndicator")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Expiration).HasMaxLength(255);
+
+                entity.Property(e => e.ExpirationDate1)
+                    .HasColumnName("ExpirationDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Expirationdate).HasColumnType("date");
+
+                entity.Property(e => e.FormLabelExpDate).HasMaxLength(255);
+
+                entity.Property(e => e.Gc)
+                    .HasColumnName("GC")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Grdate)
+                    .HasColumnName("GRDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.ImpoundPeriod).HasMaxLength(50);
+
+                entity.Property(e => e.ImpoundmentDate).HasColumnType("date");
+
+                entity.Property(e => e.InventoryCategorization).HasMaxLength(255);
+
+                entity.Property(e => e.InventoryStatus).HasMaxLength(255);
+
+                entity.Property(e => e.LastMoveType).HasMaxLength(50);
+
+                entity.Property(e => e.LastMovementDate).HasColumnType("date");
+
+                entity.Property(e => e.Lc)
+                    .HasColumnName("LC")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.ManufacturingDate).HasColumnType("date");
+
+                entity.Property(e => e.MaterialId).HasMaxLength(50);
+
+                entity.Property(e => e.MaterialName).HasMaxLength(255);
+
+                entity.Property(e => e.MaterialType).HasMaxLength(255);
+
+                entity.Property(e => e.Month).HasMaxLength(20);
+
+                entity.Property(e => e.MrpcontrollerId)
+                    .HasColumnName("MRPControllerId")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.MtsMto)
+                    .HasColumnName("MTS/MTO")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.PlantCountry).HasMaxLength(255);
+
+                entity.Property(e => e.PlantId)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PlantName).HasMaxLength(255);
+
+                entity.Property(e => e.PlantRegion).HasMaxLength(50);
+
+                entity.Property(e => e.ProdHierL1product)
+                    .HasColumnName("ProdHierL1Product")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL1productDesc)
+                    .HasColumnName("ProdHierL1ProductDesc")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL2brand)
+                    .HasColumnName("ProdHierL2Brand")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL2brandDesc)
+                    .HasColumnName("ProdHierL2BrandDesc")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL3family)
+                    .HasColumnName("ProdHierL3Family")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL3familyDesc)
+                    .HasColumnName("ProdHierL3FamilyDesc")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL4subFamily)
+                    .HasColumnName("ProdHierL4SubFamily")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProdHierL4subFamilyDesc)
+                    .HasColumnName("ProdHierL4SubFamilyDesc")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.QtyTotalStockAltUom).HasColumnName("QtyTotalStockAltUOM");
+
+                entity.Property(e => e.SpecialStockIndicator).HasMaxLength(20);
+
+                entity.Property(e => e.StorageLocation).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(100);
+
+                entity.Property(e => e.ValuationClass).HasMaxLength(100);
+
+                entity.Property(e => e.ValueGc)
+                    .HasColumnName("ValueGC")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.ValueLc).HasColumnName("ValueLC");
+
+                entity.Property(e => e.Vendor).HasMaxLength(255);
+
+                entity.HasOne(d => d.Plant)
+                    .WithMany()
+                    .HasForeignKey(d => d.PlantId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_plantcode");
             });
 
             OnModelCreatingPartial(modelBuilder);

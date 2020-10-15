@@ -1,4 +1,5 @@
-﻿using corrsDashboard.Models;
+﻿
+using corrsDashboard.Models;
 using corrsDashboard.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace corrsDashboard.IRepositories
 {
     public interface ICorrsplants
     {
-        Task<List<Metricbasedreasoncodeview>> GetCategories();
+        //Task<List<Metricbasedreasoncodeview>> GetCategories();
         dynamic getplant();
         IEnumerable<Corrsplants> GetAllPlantID();
         
