@@ -11,6 +11,7 @@ namespace corrsDashboard.Models
         public string UpdatedBy { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
+        public int Id { get; set; }
 
         public virtual Corrsmetrics Metric { get; set; }
         public virtual ReasonCodes Reason { get; set; }
