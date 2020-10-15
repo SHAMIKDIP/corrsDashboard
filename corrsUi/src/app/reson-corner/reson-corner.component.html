@@ -13,7 +13,7 @@
                         <div class="col-md-12 no-padding">
                             <select class="form-control" ng-model="model" [ngClass]="{'error': PlantErr}" name (change)="selectChange($event,1)" ng-required="true">
                                 <option value="" >Please Selct...</option>
-                                <option [value]="options.plantId" *ngFor="let options of PlantVal">{{options.plantId}}</option>
+                                <option [value]="options" *ngFor="let options of PlantFilter">{{options}}</option>
                             </select>
                         </div>
                         <div class="col-md-12 no-padding" *ngIf="PlantErr">
@@ -67,7 +67,8 @@
     <div class="row">
         <p *ngIf="SaveMessage != ''" class="alert alert-success" role="alert"><strong>{{selectedRow.length}}</strong> {{SaveMessage}}</p>
         <p *ngIf="data" class="text-right col-md-12 save-icon">
-            <i class="fa fa-save pointer" title="save" (click)="reasonSave()"></i>
+            <i *ngIf="selectedRow == ''" aria-disabled="true" class="fa fa-save pointer disabled" title="save"></i>
+            <i *ngIf="selectedRow != ''" class="fa fa-save pointer" title="save" (click)="reasonSave()"></i>
         </p>
         <div *ngIf="data" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
             <table id="missedOrders" class="table table-striped table-sm hover" datatable [dtOptions]="dtOptions">

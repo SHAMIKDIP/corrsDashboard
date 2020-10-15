@@ -9,6 +9,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 declare const GetWeekArr: any
 declare const validateRowReasonSelect: any
 declare const validateRowCheck: any
+declare const FilterData: any
 
 @Component({
   selector: 'app-reson-corner',
@@ -43,6 +44,7 @@ export class ResonCornerComponent implements OnInit {
   }
   selectedRow:any = []
   SaveMessage:string = ''
+  PlantFilter:any
 
   constructor(private restApiService: RestAPIService) { }
 
@@ -52,6 +54,9 @@ export class ResonCornerComponent implements OnInit {
   sendGetRequest(){
     this.restApiService.GetPlantId().subscribe((result)=>{ 
       this.PlantVal  =  result
+      let newVal = FilterData(this.PlantVal)
+      newVal = newVal.filter((item, index) => newVal.indexOf(item) === index)
+      this.PlantFilter = newVal
     })
     var result = this.getWeekNumber(new Date())
     var range = GetWeekArr(result)    
@@ -134,12 +139,19 @@ export class ResonCornerComponent implements OnInit {
   }
   reasonSave(){
     if(this.selectedRow != ''){
-      let saveData = {​​​​​​​
-        "shopFloorMetricDetails": this.selectedRow
-      }​​​​​​​
-      this.restApiService.SaveData(saveData).subscribe((result)=>{ 
+      // let saveData = {​​​​​​​
+      //   "shopFloorMetricDetails": this.selectedRow
+      // }​​​​​​​
+      // this.restApiService.SaveData(saveData).subscribe((result)=>{ 
         this.SaveMessage = "Record has been updated successfully !"
-      })
+        document.getElementById(this.selectedRow[0].IdSel).setAttribute("disabled", 'true')
+        for(let i=0;i<this.selectedRow.length;i++){
+          document.getElementById(this.selectedRow[i].IdSel).setAttribute("disabled", 'true')
+          document.getElementById(this.selectedRow[i].IDCheck).setAttribute("disabled", 'true')
+        }
+      // })
+    }else{
+      alert('please select a reason to save')
     }
   }
 }

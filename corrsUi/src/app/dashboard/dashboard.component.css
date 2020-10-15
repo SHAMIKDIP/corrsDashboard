@@ -3,7 +3,15 @@
     display: block;
     margin: 0px auto;
     margin-top: 20px;
+    font-size: 14px;
 }
 .tab-content{
-    padding: 20px 0 0 0;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    min-height: 400px;
+}
+.save-button-wrap{
+    text-align: right;
+    margin-top: 10px;
 }
