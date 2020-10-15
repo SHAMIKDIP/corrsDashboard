@@ -9,7 +9,7 @@ namespace corrsDashboard.IRepositories
 {
     public interface ICorrsplants
     {
-        Task<List<Corrsplants>> GetCategories();
+        Task<List<Metricbasedreasoncodeview>> GetCategories();
         dynamic getplant();
         IEnumerable<Corrsplants> GetAllPlantID();
         

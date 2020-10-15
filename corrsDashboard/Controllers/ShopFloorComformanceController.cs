@@ -75,7 +75,7 @@ namespace corrsDashboard.Controllers
                                      {
                                          _reasoncode.ReasonCode,
                                          shopflor.ReasonCodeId,
-                                         shopflor.ResourceName,
+                                         shopflor.Resource,
                                          shopflor.PlantName,
                                          shopflor.PlantId,
                                          shopflor.ProcessOrder,

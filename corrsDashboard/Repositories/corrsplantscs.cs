@@ -36,11 +36,11 @@ namespace corrsDashboard.Repositories
               }).ToArray();
 }
 
-        public async Task<List<Corrsplants>> GetCategories()
+        public async Task<List<Metricbasedreasoncodeview>> GetCategories()
         {
             if (db != null)
             {
-                return await db.Corrsplants.ToListAsync();
+                return await db.Metricbasedreasoncodeview.ToListAsync();
             }
 
             return null;
