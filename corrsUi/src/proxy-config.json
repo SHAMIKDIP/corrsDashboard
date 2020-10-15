@@ -1,0 +1,7 @@
+{
+    "/ShopFloorComformance/*": {
+        "target": "https://localhost:44377",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

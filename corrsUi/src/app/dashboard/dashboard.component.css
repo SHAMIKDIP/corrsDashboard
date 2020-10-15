@@ -1,0 +1,9 @@
+.tab-wrap{
+    width: 90%;
+    display: block;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+.tab-content{
+    padding: 20px 0 0 0;
+}
