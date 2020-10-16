@@ -17,7 +17,7 @@ namespace corrsDashboard.Repositories
 
         public dynamic getplantDetails()
         {
-            return db.Metricsview
+            return db.Metricsview.Where(s=> s.ReasonCodeApplicability == 1)
              .Select(x => new
              {
                  x.MetricName,

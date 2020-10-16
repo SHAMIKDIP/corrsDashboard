@@ -31,6 +31,7 @@ namespace corrsDashboard.Models
         public int? Month { get; set; }
         public string Quarter { get; set; }
         public int? ReasonCodeId { get; set; }
+        public int? ReasonCornerFlag { get; set; }
 
         public virtual Corrsplants Plant { get; set; }
         public virtual ReasonCodes ReasonCode { get; set; }

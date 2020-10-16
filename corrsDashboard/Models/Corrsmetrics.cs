@@ -20,6 +20,7 @@ namespace corrsDashboard.Models
         public DateTime? DateUpdated { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
+        public int? ReasonCodeApplicability { get; set; }
 
         public virtual ICollection<Configurationmaster> Configurationmaster { get; set; }
         public virtual ICollection<Corrsmetricreasoncodedependency> Corrsmetricreasoncodedependency { get; set; }

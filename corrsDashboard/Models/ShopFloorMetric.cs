@@ -14,8 +14,8 @@ namespace corrsDashboard.Models
         [JsonProperty("MetricId")]
         public int MetricId { get; set; }
 
-        [JsonProperty("Flag")]
-        public string Flag { get; set; }
+        [JsonProperty("Reasoncornerflag")]
+        public int Reasoncornerflag { get; set; }
 
         [JsonProperty("ProcessOrder")]
         public long ProcessOrder { get; set; }

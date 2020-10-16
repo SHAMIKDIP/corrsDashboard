@@ -7,6 +7,7 @@ using corrsDashboard.IRepositories;
 using corrsDashboard.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace corrsDashboard.Controllers
 {
@@ -71,7 +72,21 @@ namespace corrsDashboard.Controllers
             return Ok();
         }
 
-
+        [HttpPut]
+        [Route("Reasoncodeupdate")]
+        public IActionResult UpdateFlag([FromBody] ReasonCodes rc)
+        {
+            var data = _context.ReasonCodes.FirstOrDefault(s => s.ReasonCodeId == rc.ReasonCodeId);
+            //    _reasoncodes.GetDetailsByIDs(item.Resource, item.ProcessOrder);
+            //db.ShopFloorComformance.FirstOrDefault(s => s.Resource == resource && s.ProcessOrder == processOrder);
+            if (data != null)
+            {
+                data.Flag = rc.Flag;
+                _context.ReasonCodes.Update(data);
+                _context.SaveChanges();
+            }
+            return Ok();
+        }
         public IActionResult Index()
         {
             return View();

@@ -36,6 +36,8 @@ namespace corrsDashboard.Models
         public int? MetricId { get; set; }
         public string MetricTableName { get; set; }
         public string DbFileName { get; set; }
+        public string LogRoot { get; set; }
+        public string LogFolderPath { get; set; }
 
         public virtual Corrsmetrics Metric { get; set; }
     }

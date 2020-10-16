@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 namespace corrsDashboard.Models
 {
-    public partial class Smpoi
+    public partial class Smpoiview
     {
-        public int Id { get; set; }
         public string PlantId { get; set; }
-        public string PlantName { get; set; }
         public string PlantCountry { get; set; }
+        public string PlantName { get; set; }
         public string MrpcontrollerId { get; set; }
         public string MaterialType { get; set; }
         public string MaterialId { get; set; }
@@ -58,11 +57,8 @@ namespace corrsDashboard.Models
         public string Gc { get; set; }
         public string Month { get; set; }
         public int? Year { get; set; }
-        public DateTime? DateCreated { get; set; }
-        public DateTime? DateUpdated { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
-
-        public virtual Corrsplants Plant { get; set; }
+        public string Pid { get; set; }
+        public string Pname { get; set; }
+        public string PlantDomain { get; set; }
     }
 }

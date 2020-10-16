@@ -47,19 +47,7 @@ namespace corrsDashboard.Controllers
                 case 1:
                     break;
                 case 5:
-                    //var orders = _context.ShopFloorComformance.Where(b => b.PlantId == plantid && (b.Week == week && b.Flag == "Miss"))
-                    // .Select(x => new
-                    // {
-                    //     x.FinishDateConfirmed,
-                    //     x.FinishDateScheduled,
-                    //     x.Resource,
-                    //     x.Flag,
-                    //     x.MaterialId,
-                    //     x.OrderQuantity,
-                    //     x.ProcessOrder,
-                    //     x.PlantId,
-
-                    // }).ToArray();
+                    
                     var reason = _context.Metricbasedreasoncodeview.Where(p => p.MetricId == metricid).Select(q => new
                     {
                         q.ReasonCode,
@@ -85,7 +73,9 @@ namespace corrsDashboard.Controllers
                                          shopflor.OrderQuantityUnit,
                                          shopflor.Flag,
                                          shopflor.FinishDateConfirmed,
-                                         shopflor.FinishDateScheduled
+                                         shopflor.FinishDateScheduled,
+                                         shopflor.ReasonCornerFlag
+                                         
                                      }).ToArray();
 
 
@@ -115,7 +105,7 @@ namespace corrsDashboard.Controllers
                         var data = _ishopfloorcomformance.GetDetailsByIDs(item.Resource, item.ProcessOrder);
                         if (data != null)
                         {
-                            data.Flag = item.Flag;
+                            data.ReasonCornerFlag = item.Reasoncornerflag;
                             data.ReasonCodeId = item.ReasonCodeId;
                             //_context.Entry(data).State = EntityState.Detached;
 
