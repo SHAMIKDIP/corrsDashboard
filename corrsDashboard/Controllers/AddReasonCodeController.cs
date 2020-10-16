@@ -67,6 +67,9 @@ namespace corrsDashboard.Controllers
                         codes.Flag = item.Flag;
                         _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId);
                     }
+                    //else { 
+                    //error
+                    //}
                 }
             }
             return Ok();

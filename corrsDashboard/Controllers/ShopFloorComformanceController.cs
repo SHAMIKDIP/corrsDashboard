@@ -58,8 +58,8 @@ namespace corrsDashboard.Controllers
                                      join resoncode in _context.ReasonCodes
                                      on shopflor.ReasonCodeId equals resoncode.ReasonCodeId into joinreason
                                      from _reasoncode in joinreason.DefaultIfEmpty()
-                                     where shopflor.PlantId == plantid && shopflor.Week == week && shopflor.Flag == "Miss"
-                                     select new
+                                     where shopflor.PlantId == plantid && shopflor.Week == week && shopflor.Flag == "Miss" && _reasoncode.Flag == 1
+                                        select new
                                      {
                                          _reasoncode.ReasonCode,
                                          shopflor.ReasonCodeId,
