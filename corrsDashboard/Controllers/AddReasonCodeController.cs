@@ -74,17 +74,22 @@ namespace corrsDashboard.Controllers
 
         [HttpPut]
         [Route("Reasoncodeupdate")]
-        public IActionResult UpdateFlag([FromBody] ReasonCodes rc)
+        public IActionResult UpdateFlag([FromBody] ReasoncodeList rc)
         {
-            var data = _context.ReasonCodes.FirstOrDefault(s => s.ReasonCodeId == rc.ReasonCodeId);
-            //    _reasoncodes.GetDetailsByIDs(item.Resource, item.ProcessOrder);
-            //db.ShopFloorComformance.FirstOrDefault(s => s.Resource == resource && s.ProcessOrder == processOrder);
-            if (data != null)
+            if (ModelState.IsValid)
             {
-                data.Flag = rc.Flag;
-                _context.ReasonCodes.Update(data);
-                _context.SaveChanges();
+                foreach (var item in rc.ReasonCodeList)
+                {
+                    var data = _context.ReasonCodes.FirstOrDefault(s => s.ReasonCodeId == item.ReasonCodeId);
+                    if (data != null)
+                    {
+                        data.Flag = item.Flag;
+                        _context.ReasonCodes.Update(data);
+                        _context.SaveChanges();
+                    }
+                }
             }
+ 
             return Ok();
         }
         public IActionResult Index()

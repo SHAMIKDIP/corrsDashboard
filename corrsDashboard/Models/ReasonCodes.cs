@@ -21,5 +21,10 @@ namespace corrsDashboard.Models
 
         public virtual ICollection<Corrsmetricreasoncodedependency> Corrsmetricreasoncodedependency { get; set; }
         public virtual ICollection<ShopFloorComformance> ShopFloorComformance { get; set; }
+        
+    }
+    public class ReasoncodeList
+    {
+        public List<ReasonCodes> ReasonCodeList { get; set; }
     }
 }
