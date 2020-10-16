@@ -29,6 +29,24 @@ export class RestAPIService {
   SaveData(data:any): Observable<any>{
     return this.httpClient.put(this.api+'/ShopFloorComformance/UpdateShopFloor',data)
   }
+
+  GetReasonCode():Observable<any>{
+    return this.httpClient.get(this.api+"/AddReasonCode/Getallreasoncode")
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 //   }
 //   // Create
