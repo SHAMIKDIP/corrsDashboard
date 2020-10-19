@@ -17,7 +17,7 @@
 .header img{
     margin: 20px;
 }
-select.error{
+select.error, textarea.error{
     border: 1px solid #ff0000;
 }
 .padding-20{

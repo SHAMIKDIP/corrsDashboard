@@ -27,7 +27,7 @@ export class ResonCornerComponent implements OnInit {
   PlantErr:boolean=false
   MetricErr:boolean=false
   PeriodErr:boolean=false
-  data:any
+  data:any = null
   DataSaveArr:any
   MetricId:any
   PlantVal:any
@@ -45,6 +45,8 @@ export class ResonCornerComponent implements OnInit {
   selectedRow:any = []
   SaveMessage:string = ''
   PlantFilter:any
+  SaveDataArr:any = []
+  NoSelect:boolean = false
 
   constructor(private restApiService: RestAPIService) { }
 
@@ -121,37 +123,74 @@ export class ResonCornerComponent implements OnInit {
       })
     }
     this.restApiService.GetMissedOrders(obj).subscribe((result)=>{ 
-      this.data = result[0]
-      this.ReasonCode = result[1]
+      debugger
+      if(result){
+        this.data = result[0] == '' ? null : result[0]
+        this.ReasonCode = result[1]
+      }else{
+        this.data = null
+      }
     })
   }
   selectReason(e:any, ind:any, dat:any){
-    var selData = validateRowReasonSelect(e, ind, dat, this.MetricId)
-    if(selData){
-      this.selectedRow.push(selData)
-    }
+    let name = 'check'+ind
+    this.selectedRow = this.selectedRow.filter(reason => reason.IDCheck != name)
+    this.selectedRow.push({
+      "resource": dat.resource,
+      "flag": validateRowReasonSelect(e, ind, dat, this.MetricId),
+      "processOrder":dat.processOrder,
+      "ReasonCodeId": e.target.value,
+      "MetricId":this.MetricId,
+      "IDCheck": 'check'+ind,
+      "IdSel": 'select'+ind
+    })
   }
   selectHit(e:any, ind:any, dat:any){
-    var checkedRow = validateRowCheck(e, ind, dat, this.MetricId)
-    if(checkedRow){
-      this.selectedRow.push(checkedRow)
-    }
+    let name = 'check'+ind
+    this.selectedRow = this.selectedRow.filter(reason => reason.IDCheck != name)
+    this.selectedRow.push({
+      "resource": dat.resource,
+      "flag": e.target.checked ? "Hit" : "Miss",
+      "processOrder":dat.processOrder,
+      "ReasonCodeId": validateRowCheck(e, ind, dat, this.MetricId),
+      "MetricId":this.MetricId,
+      "IDCheck": 'check'+ind,
+      "IdSel": 'select'+ind
+    })
   }
+
   reasonSave(){
     if(this.selectedRow != ''){
-      // let saveData = {​​​​​​​
-      //   "shopFloorMetricDetails": this.selectedRow
-      // }​​​​​​​
-      // this.restApiService.SaveData(saveData).subscribe((result)=>{ 
+      let d = []
+      for(let e = 0;e<this.selectedRow.length;e++){
+        d.push(
+          {
+            "resource":this.selectedRow[e].resource,
+            "flag":this.selectedRow[e].flag,
+            "processOrder":this.selectedRow[e].processOrder,
+            "ReasonCodeId": this.selectedRow[e].ReasonCodeId ? parseInt(this.selectedRow[e].ReasonCodeId) : null,
+            "MetricId":this.selectedRow[e].MetricId,
+            "reasoncornerflag": this.selectedRow[e].flag == 'Hit' ? 1 : 0
+          }
+        )
+      }
+      // console.log(d)
+      let saveData = {​​​​​​​
+        "shopFloorMetricDetails": d
+      }​​​​​​​
+      this.restApiService.SaveData(saveData).subscribe((result)=>{ 
         this.SaveMessage = "Record has been updated successfully !"
-        document.getElementById(this.selectedRow[0].IdSel).setAttribute("disabled", 'true')
-        for(let i=0;i<this.selectedRow.length;i++){
-          document.getElementById(this.selectedRow[i].IdSel).setAttribute("disabled", 'true')
-          document.getElementById(this.selectedRow[i].IDCheck).setAttribute("disabled", 'true')
-        }
-      // })
+        // for(let i=0;i<this.selectedRow.length;i++){
+        //   document.getElementById(this.selectedRow[i].IdSel).setAttribute("disabled", 'true')
+        //   document.getElementById(this.selectedRow[i].IDCheck).setAttribute("disabled", 'true')
+        // }
+        this.selectedRow = []
+        setTimeout (() => {
+          this.SaveMessage = ''
+        }, 3000)
+      })
     }else{
-      alert('please select a reason to save')
+      this.NoSelect = true
     }
   }
 }

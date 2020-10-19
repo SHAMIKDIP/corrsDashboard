@@ -93,14 +93,17 @@
                         <td>{{dat.orderQuantity}}</td>
                         <td>{{dat.finishDateScheduled}}</td>
                         <td>
-                            <select class="form-control" id="select{{i}}" (change)="selectReason($event, i, dat)">
+                            <select class="form-control" [value]="dat.reasonCodeId" id="select{{i}}" (change)="selectReason($event, i, dat)">
                                 <option value="">Please select</option>
-                                <option [value]="resCd.reasonCodeId" *ngFor="let resCd of ReasonCode">{{resCd.reasonCode}}</option>
+                                <option 
+                                [attr.selected]="dat.reasonCodeId==resCd.reasonCodeId ? true : null"
+                                [value]="resCd.reasonCodeId" *ngFor="let resCd of ReasonCode">{{resCd.reasonCode}}</option>
                             </select>
                         </td>
                         <td>
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="check{{i}}" (change)="selectHit($event, i, dat)">
+                                <input type="checkbox" [attr.checked]="dat.reasonCornerFlag ? true : null"
+                                class="custom-control-input" id="check{{i}}" (change)="selectHit($event, i, dat)">
                                 <label class="custom-control-label" for="check{{i}}"></label>
                             </div>
                         </td>
