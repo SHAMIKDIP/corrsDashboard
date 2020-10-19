@@ -18,13 +18,13 @@ namespace corrsDashboard.Repositories
             db = _db;
         }
 
-        public IEnumerable<Corrsplants> GetAllPlantID()
-        {
-            return db.Corrsplants
-                 .OrderBy(b => b.PlantId)
-                 .ToList();
+        //public IEnumerable<Corrsplants> GetAllPlantID()
+        //{
+        //    return db.Corrsplants
+        //         .OrderBy(b => b.PlantId)
+        //         .ToList();
 
-        }
+        //}
         public dynamic getplant()
         {
             return db.Corrsplants
@@ -32,7 +32,8 @@ namespace corrsDashboard.Repositories
               {
                   x.PlantId,
                   x.PlantDomain,
-                  x.PlantName
+                  x.PlantName,
+                  x.Flag
               }).ToArray();
 }
 

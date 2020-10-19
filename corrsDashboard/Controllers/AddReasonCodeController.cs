@@ -55,8 +55,8 @@ namespace corrsDashboard.Controllers
                 foreach (var item in reasonCodes.MetricbasedreasoncodeviewDetails)
                 {
                     var dataExists = _context.Corrsmetricreasoncodedependency
-                        .FirstOrDefault(c => c.MetricId == item.MetricId && c.Reason.ReasonCode == item.ReasonCode);
-
+                        .FirstOrDefault(c => c.Reason.ReasonCode == item.ReasonCode);
+                    //.MetricId == item.MetricId &&
                     //var dataExists = _context.Corrsmetricreasoncodedependency
                     //    .Include(r => r.Reason).FirstOrDefault(c => c.Metric.MetricName == item.MetricName && c.Reason.ReasonCode == item.ReasonCode);
 
@@ -67,9 +67,11 @@ namespace corrsDashboard.Controllers
                         codes.Flag = item.Flag;
                         _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId);
                     }
-                    //else { 
-                    //error
-                    //}
+                    else if (dataExists.ReasonId != 0)
+                    {
+                        return Ok(item.ReasonCode + " already exists");
+                    }
+                   
                 }
             }
             return Ok();

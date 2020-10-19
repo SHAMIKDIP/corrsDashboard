@@ -12,7 +12,7 @@ namespace corrsDashboard.IRepositories
     {
         //Task<List<Metricbasedreasoncodeview>> GetCategories();
         dynamic getplant();
-        IEnumerable<Corrsplants> GetAllPlantID();
+       // IEnumerable<Corrsplants> GetAllPlantID();
         
     }
 }
