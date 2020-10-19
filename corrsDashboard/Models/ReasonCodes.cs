@@ -12,7 +12,6 @@ namespace corrsDashboard.Models
         }
 
         public string ReasonCode { get; set; }
-        public int? Flag { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
         public string CreatedBy { get; set; }
@@ -21,10 +20,5 @@ namespace corrsDashboard.Models
 
         public virtual ICollection<Corrsmetricreasoncodedependency> Corrsmetricreasoncodedependency { get; set; }
         public virtual ICollection<ShopFloorComformance> ShopFloorComformance { get; set; }
-        
-    }
-    public class ReasoncodeList
-    {
-        public List<ReasonCodes> ReasonCodeList { get; set; }
     }
 }

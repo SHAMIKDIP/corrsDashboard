@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using corrsDashboard.IRepositories;
 using corrsDashboard.Models;
+using corrsDashboard.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,7 @@ namespace corrsDashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var item in cp.corrsPlantList)
+                foreach (var item in cp.getCorrsplantlist)
                 {
                     var data = _context.Corrsplants.FirstOrDefault(s => s.PlantId == item.PlantId);
                     
@@ -55,6 +56,13 @@ namespace corrsDashboard.Controllers
                 }
             }
 
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("Saveplantdetails")]
+        IActionResult Create([FromBody] corrsplantsList reasonCodes)
+        {
             return Ok();
         }
 

@@ -24,9 +24,4 @@ namespace corrsDashboard.Models
         public virtual ICollection<ShopFloorComformance> ShopFloorComformance { get; set; }
         public virtual ICollection<Smpoi> Smpoi { get; set; }
     }
-        public class corrsplantsList
-        {
-        public List<Corrsplants> corrsPlantList { get; set; }
-
-        }
 }

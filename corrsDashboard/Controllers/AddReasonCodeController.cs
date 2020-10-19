@@ -5,6 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using corrsDashboard.IRepositories;
 using corrsDashboard.Models;
+using corrsDashboard.ViewModel;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,19 +53,15 @@ namespace corrsDashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var item in reasonCodes.MetricbasedreasoncodeviewDetails)
+                foreach (var item in reasonCodes.MetricreasoncodeviewDetails)
                 {
                     var dataExists = _context.Corrsmetricreasoncodedependency
                         .FirstOrDefault(c => c.Reason.ReasonCode == item.ReasonCode);
-                    //.MetricId == item.MetricId &&
-                    //var dataExists = _context.Corrsmetricreasoncodedependency
-                    //    .Include(r => r.Reason).FirstOrDefault(c => c.Metric.MetricName == item.MetricName && c.Reason.ReasonCode == item.ReasonCode);
-
                     if (dataExists == null)
                     {
                         ReasonCodes codes = new ReasonCodes();
                         codes.ReasonCode = item.ReasonCode;
-                        codes.Flag = item.Flag;
+                        //codes.Flag = item.Flag;
                         _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId);
                     }
                     else if (dataExists.ReasonId != 0)
@@ -79,17 +76,17 @@ namespace corrsDashboard.Controllers
 
         [HttpPut]
         [Route("Reasoncodeupdate")]
-        public IActionResult UpdateFlag([FromBody] ReasoncodeList rc)
+        public IActionResult UpdateFlag([FromBody] MetricbasedreasoncodeDetails rc)
         {
             if (ModelState.IsValid)
             {
-                foreach (var item in rc.ReasonCodeList)
+                foreach (var item in rc.MetricDetails)
                 {
-                    var data = _context.ReasonCodes.FirstOrDefault(s => s.ReasonCodeId == item.ReasonCodeId);
+                    var data = _context.Corrsmetricreasoncodedependency.FirstOrDefault(s => s.Reason.ReasonCodeId == item.Reason.ReasonCodeId && s.MetricId == item.MetricId);
                     if (data != null)
                     {
                         data.Flag = item.Flag;
-                        _context.ReasonCodes.Update(data);
+                        _context.Corrsmetricreasoncodedependency.Update(data);
                         _context.SaveChanges();
                     }
                 }

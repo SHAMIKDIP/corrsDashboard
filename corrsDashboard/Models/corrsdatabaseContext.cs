@@ -142,6 +142,8 @@ namespace corrsDashboard.Models
 
                 entity.Property(e => e.DateUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                entity.Property(e => e.Flag).HasDefaultValueSql("1");
+
                 entity.Property(e => e.UpdatedBy).HasMaxLength(100);
 
                 entity.HasOne(d => d.Metric)
@@ -440,8 +442,6 @@ namespace corrsDashboard.Models
                 entity.Property(e => e.DateCreated).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.DateUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.Flag).HasDefaultValueSql("1");
 
                 entity.Property(e => e.ReasonCode)
                     .IsRequired()
