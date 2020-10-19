@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment'
 
 @Injectable({
@@ -34,6 +34,27 @@ export class RestAPIService {
     return this.httpClient.get(this.api+"/AddReasonCode/Getallreasoncode")
   }
 
+  SaveReasonCode(data:any): Observable<any>{
+    return this.httpClient.post(this.api+'/AddReasonCode/SaveReasoncode',data)
+  }
+
+  EnableReasonSave(data:any):Observable<any>{
+    return this.httpClient.put(this.api+'/AddReasonCode/Reasoncodeupdate',data)
+    // .pipe(
+    //           catchError(this.error)
+    //         )
+  }
+
+  // error(error: HttpErrorResponse) {
+  //       let errorMessage = '';
+  //       if (error.error instanceof ErrorEvent) {
+  //         errorMessage = error.error.message;
+  //       } else {
+  //         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  //       }
+  //       console.log(errorMessage);
+  //       return throwError(errorMessage);
+  //     }
 
 
 

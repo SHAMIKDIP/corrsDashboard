@@ -53,71 +53,72 @@ function GetWeekArr(result){
 
 function validateRowReasonSelect(e, i, d, m){
   var checkVal = document.getElementById('check'+i).checked
-  var name = e.target.value
-  var saveData = {
-    "resource": d.resource,
-    "flag": checkVal,
-    "processOrder":d.processOrder,
-    "ReasonCodeId":name,
-    "MetricId":m,
-    "IDCheck": 'check'+i,
-    "IdSel": 'select'+i
-  }
-  if((!saveData.flag && saveData.ReasonCodeId == '') || (saveData.flag && saveData.ReasonCodeId != '')){
-    var checkSel = document.getElementById('select'+i)
-    var check = document.getElementById('check'+i)
-    checkSel.classList.remove("error")
-    check.nextSibling.classList.remove("err-border")
-  }else if(saveData.flag && saveData.ReasonCodeId == ''){
-    var checkSel = document.getElementById('select'+i)
-    var check = document.getElementById('check'+i)
-    checkSel.classList.add("error")
-    check.nextSibling.classList.remove("err-border")
-  }else if(!saveData.flag && saveData.ReasonCodeId != ''){
-    var checkSel = document.getElementById('select'+i)
-    var check = document.getElementById('check'+i)
-    checkSel.classList.remove("error")
-    check.nextSibling.classList.add("err-border")
-  }
-  if(saveData.flag && saveData.ReasonCodeId != ''){
-    saveData.flag = saveData.flag ? 'Hit' : false
-    saveData.ReasonCodeId  = saveData.ReasonCodeId != '' ? parseInt(saveData.ReasonCodeId) : ''
-    return saveData
-  }
+  // var name = e.target.value
+  return checkVal ? "Hit" : "Miss"
+  // var saveData = {
+  //   "resource": d.resource,
+  //   "flag": checkVal,
+  //   "processOrder":d.processOrder,
+  //   "ReasonCodeId":name,
+  //   "MetricId":m,
+  //   "IDCheck": 'check'+i,
+  //   "IdSel": 'select'+i
+  // }
+  // if((!saveData.flag && saveData.ReasonCodeId == '') || (saveData.flag && saveData.ReasonCodeId != '')){
+  //   var checkSel = document.getElementById('select'+i)
+  //   var check = document.getElementById('check'+i)
+  //   checkSel.classList.remove("error")
+  //   check.nextSibling.classList.remove("err-border")
+  // }else if(saveData.flag && saveData.ReasonCodeId == ''){
+  //   var checkSel = document.getElementById('select'+i)
+  //   var check = document.getElementById('check'+i)
+  //   checkSel.classList.add("error")
+  //   check.nextSibling.classList.remove("err-border")
+  // }else if(!saveData.flag && saveData.ReasonCodeId != ''){
+  //   var checkSel = document.getElementById('select'+i)
+  //   var check = document.getElementById('check'+i)
+  //   checkSel.classList.remove("error")
+  //   check.nextSibling.classList.add("err-border")
+  // }
+  // if(saveData.flag && saveData.ReasonCodeId != ''){
+  //   saveData.flag = saveData.flag ? 'Hit' : false
+  //   saveData.ReasonCodeId  = saveData.ReasonCodeId != '' ? parseInt(saveData.ReasonCodeId) : ''
+  //   return saveData
+  // }
 }
 function validateRowCheck(e, i, d, m){
-  var checkVal = document.getElementById('select'+i).value
-  var name = e.target.checked
-  var saveData = {
-    "resource": d.resource,
-    "flag": name,
-    "processOrder":d.processOrder,
-    "ReasonCodeId":checkVal,
-    "MetricId":m,
-    "IDCheck": 'check'+i,
-    "IdSel": 'select'+i
-  }
-  if((!saveData.flag && saveData.ReasonCodeId == '') || (saveData.flag && saveData.ReasonCodeId != '')){
-    var checkSel = document.getElementById('select'+i)
-    var check = document.getElementById('check'+i)
-    checkSel.classList.remove("error")
-    check.nextSibling.classList.remove("err-border")
-  }else if(saveData.flag && saveData.ReasonCodeId == ''){
-    var checkSel = document.getElementById('select'+i)
-    var check = document.getElementById('check'+i)
-    checkSel.classList.add("error")
-    check.nextSibling.classList.remove("err-border")
-  }else if(!saveData.flag && saveData.ReasonCodeId != ''){
-    var checkSel = document.getElementById('select'+i)
-    var check = document.getElementById('check'+i)
-    checkSel.classList.remove("error")
-    check.nextSibling.classList.remove("err-border")
-  }
-  if(saveData.flag && saveData.ReasonCodeId != ''){
-    saveData.flag = saveData.flag ? 'Hit' : false
-    saveData.ReasonCodeId  = saveData.ReasonCodeId != '' ? parseInt(saveData.ReasonCodeId) : ''
-    return saveData
-  }
+  return checkVal = document.getElementById('select'+i).value
+  // var name = e.target.checked
+  // var saveData = {
+  //   "resource": d.resource,
+  //   "flag": name,
+  //   "processOrder":d.processOrder,
+  //   "ReasonCodeId":checkVal,
+  //   "MetricId":m,
+  //   "IDCheck": 'check'+i,
+  //   "IdSel": 'select'+i
+  // }
+  // if((!saveData.flag && saveData.ReasonCodeId == '') || (saveData.flag && saveData.ReasonCodeId != '')){
+  //   var checkSel = document.getElementById('select'+i)
+  //   var check = document.getElementById('check'+i)
+  //   checkSel.classList.remove("error")
+  //   check.nextSibling.classList.remove("err-border")
+  // }else if(saveData.flag && saveData.ReasonCodeId == ''){
+  //   var checkSel = document.getElementById('select'+i)
+  //   var check = document.getElementById('check'+i)
+  //   checkSel.classList.add("error")
+  //   check.nextSibling.classList.remove("err-border")
+  // }else if(!saveData.flag && saveData.ReasonCodeId != ''){
+  //   var checkSel = document.getElementById('select'+i)
+  //   var check = document.getElementById('check'+i)
+  //   checkSel.classList.remove("error")
+  //   check.nextSibling.classList.remove("err-border")
+  // }
+  // if(saveData.flag && saveData.ReasonCodeId != ''){
+  //   saveData.flag = saveData.flag ? 'Hit' : false
+  //   saveData.ReasonCodeId  = saveData.ReasonCodeId != '' ? parseInt(saveData.ReasonCodeId) : ''
+  //   return saveData
+  // }
 }
 function FilterData(data){
   var e = []
