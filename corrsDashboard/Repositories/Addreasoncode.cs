@@ -42,6 +42,7 @@ namespace corrsDashboard.Repositories
             Corrsmetricreasoncodedependency cmrcDependency = new Corrsmetricreasoncodedependency();
             cmrcDependency.MetricId = metricId;
             cmrcDependency.ReasonId = reasonCodeId;
+            cmrcDependency.Flag = 1;
             db.Corrsmetricreasoncodedependency.Add(cmrcDependency);
             db.SaveChanges();
         }
