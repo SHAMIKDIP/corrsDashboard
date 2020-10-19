@@ -66,6 +66,7 @@
     
     <div class="row">
         <p *ngIf="SaveMessage != ''" class="alert alert-success" role="alert"><strong>{{selectedRow.length}}</strong> {{SaveMessage}}</p>
+        <p *ngIf="SaveMessageErr != ''" class="alert alert-danger" role="alert">{{SaveMessageErr}}</p>
         <p *ngIf="data" class="text-right col-md-12 save-icon">
             <i *ngIf="selectedRow == ''" aria-disabled="true" class="fa fa-save pointer disabled" title="save"></i>
             <i *ngIf="selectedRow != ''" class="fa fa-save pointer" title="save" (click)="reasonSave()"></i>

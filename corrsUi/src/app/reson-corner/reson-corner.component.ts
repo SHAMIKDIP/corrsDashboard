@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from '../../environments/environment'
 // import { DateRangeOfWeek } from './periods'
 import {RestAPIService} from '../api-service/ApiService'
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 
 declare const GetWeekArr: any
 declare const validateRowReasonSelect: any
@@ -47,6 +46,7 @@ export class ResonCornerComponent implements OnInit {
   PlantFilter:any
   SaveDataArr:any = []
   NoSelect:boolean = false
+  SaveMessageErr:string = ''
 
   constructor(private restApiService: RestAPIService) { }
 
@@ -123,7 +123,6 @@ export class ResonCornerComponent implements OnInit {
       })
     }
     this.restApiService.GetMissedOrders(obj).subscribe((result)=>{ 
-      debugger
       if(result){
         this.data = result[0] == '' ? null : result[0]
         this.ReasonCode = result[1]
@@ -184,10 +183,15 @@ export class ResonCornerComponent implements OnInit {
         //   document.getElementById(this.selectedRow[i].IdSel).setAttribute("disabled", 'true')
         //   document.getElementById(this.selectedRow[i].IDCheck).setAttribute("disabled", 'true')
         // }
-        this.selectedRow = []
         setTimeout (() => {
+          this.selectedRow = []
           this.SaveMessage = ''
-        }, 3000)
+        }, 5000)
+      },(error) =>{
+        this.SaveMessageErr = 'Somthing went wrong. Please try again'
+        setTimeout (() => {
+          this.SaveMessageErr = ''
+        }, 5000)
       })
     }else{
       this.NoSelect = true

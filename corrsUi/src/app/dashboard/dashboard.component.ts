@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit {
     
   }
   enableReasonSave(){
-    // if(this.EnableSaveData != ''){
+    if(this.EnableSaveData != ''){
       let d = {
         "ReasonCodeList": this.EnableSaveData
       }
@@ -121,9 +121,9 @@ export class DashboardComponent implements OnInit {
           this.EnableSucces = false
         }, 3000)
       })
-    // }else{
-    //   this.ResonSelect = true
-    // }
+    }else{
+      this.ResonSelect = true
+    }
   }
 
   changeTab(t:any){
