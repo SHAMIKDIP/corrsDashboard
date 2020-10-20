@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from '../../environments/environment'
 // import { DateRangeOfWeek } from './periods'
 import {RestAPIService} from '../api-service/ApiService'
+import { CommonModal } from '../modal/Modal'
 
 declare const GetWeekArr: any
 declare const validateRowReasonSelect: any
@@ -47,8 +48,10 @@ export class ResonCornerComponent implements OnInit {
   SaveDataArr:any = []
   NoSelect:boolean = false
   SaveMessageErr:string = ''
+  MessageSuccessModal:string = ''
+  MessageErrorModal:string = ''
 
-  constructor(private restApiService: RestAPIService) { }
+  constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
   ngOnInit(): void {
     this.sendGetRequest()
@@ -177,24 +180,23 @@ export class ResonCornerComponent implements OnInit {
       let saveData = {​​​​​​​
         "shopFloorMetricDetails": d
       }​​​​​​​
-      this.restApiService.SaveData(saveData).subscribe((result)=>{ 
-        this.SaveMessage = "Record has been updated successfully !"
-        // for(let i=0;i<this.selectedRow.length;i++){
-        //   document.getElementById(this.selectedRow[i].IdSel).setAttribute("disabled", 'true')
-        //   document.getElementById(this.selectedRow[i].IDCheck).setAttribute("disabled", 'true')
-        // }
+      this.MessageSuccessModal = ''
+      this.MessageErrorModal = ''
+      this.restApiService.SaveData(saveData).subscribe((result) => {
+        this.MessageSuccessModal = d.length + ' Record has been updated successfully !'
+        document.getElementById('openModal').click()
         setTimeout (() => {
           this.selectedRow = []
-          this.SaveMessage = ''
-        }, 5000)
-      },(error) =>{
-        this.SaveMessageErr = 'Somthing went wrong. Please try again'
-        setTimeout (() => {
-          this.SaveMessageErr = ''
-        }, 5000)
+        }, 100)
+      },(error) => {
+        this.MessageErrorModal = 'Something went wrong. Please try again later'
+        document.getElementById('openModal').click()
       })
     }else{
       this.NoSelect = true
     }
+  }
+  open(content:any){
+    this.CommonModal.open(content)
   }
 }

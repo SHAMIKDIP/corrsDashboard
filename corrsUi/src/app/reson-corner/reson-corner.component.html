@@ -135,3 +135,18 @@
         </div>
     </div>
 </div>
+<ng-template #content let-modal> 
+    <p *ngIf="MessageSuccessModal != ''" class="alert alert-success" style="width: 100%;" role="alert">
+      <span>{{MessageSuccessModal}}</span>
+      <button type="button" class="close"	aria-label="Close" (click)="modal.dismiss()">
+              <span aria-hidden="true">×</span> 
+          </button>
+    </p>
+    <p *ngIf="MessageErrorModal != ''" class="alert alert-danger" style="width: 100%;">
+      <span>{{MessageErrorModal}}</span>
+      <button type="button" class="close"	aria-label="Close" (click)="modal.dismiss()">
+              <span aria-hidden="true">×</span> 
+          </button>
+    </p>
+  </ng-template>
+  <button class="btn btn-lg btn-outline-primary" style="display: none;" id="openModal" (click)="open(content)"></button>

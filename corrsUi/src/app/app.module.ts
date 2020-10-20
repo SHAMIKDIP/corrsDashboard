@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ResonCornerComponent } from './reson-corner/reson-corner.component';
+import { CommonModal } from './modal/Modal'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ResonCornerComponent } from './reson-corner/reson-corner.component';
     DashboardComponent,
     HeaderComponent,
     FooterComponent,
-    ResonCornerComponent
+    ResonCornerComponent,
+    CommonModal
   ],
   imports: [
     BrowserModule,
