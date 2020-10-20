@@ -16,7 +16,7 @@ namespace corrsDashboard.Repositories
             db = _db;
         }
 
-        public void AddReasonCodes(ReasonCodes reasonCodes, int metricId)
+        public void AddReasonCodes(ReasonCodes reasonCodes, int metricId,int Flag)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -27,22 +27,24 @@ namespace corrsDashboard.Repositories
                     db.SaveChanges();
 
                     int newReasconCodeId = reasonCodes.ReasonCodeId;
-                    AddMetricReasonCodeDependencyDetails(newReasconCodeId, metricId);
+                    int newReasconCode = reasonCodes.ReasonCodeId;
+                    AddMetricReasonCodeDependencyDetails(newReasconCodeId, metricId, Flag);
                 }
                 else
                 {
-                    AddMetricReasonCodeDependencyDetails(reasonCodeData.ReasonCodeId, metricId);
+                    AddMetricReasonCodeDependencyDetails(reasonCodeData.ReasonCodeId, metricId, Flag);
                 }
                 transaction.Commit();
             }
         }
 
-        public void AddMetricReasonCodeDependencyDetails(int reasonCodeId, int metricId)
+        public void AddMetricReasonCodeDependencyDetails(int reasonCodeId, int metricId,int Flag)
         {
             Corrsmetricreasoncodedependency cmrcDependency = new Corrsmetricreasoncodedependency();
             cmrcDependency.MetricId = metricId;
             cmrcDependency.ReasonId = reasonCodeId;
-            cmrcDependency.Flag = 1;
+            cmrcDependency.Flag = Flag;
+            //cmrcDependency.Flag = 1;
             db.Corrsmetricreasoncodedependency.Add(cmrcDependency);
             db.SaveChanges();
         }

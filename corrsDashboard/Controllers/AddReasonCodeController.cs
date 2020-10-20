@@ -14,7 +14,7 @@ namespace corrsDashboard.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    
+
     public class AddReasonCodeController : Controller
     {
         private readonly IAddreasoncode _iaddreasoncode;
@@ -63,18 +63,47 @@ namespace corrsDashboard.Controllers
                         ReasonCodes codes = new ReasonCodes();
                         codes.ReasonCode = item.ReasonCode;
                         //codes.Flag = item.Flag;
-                        _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId);
+                        _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId, (int)item.Flag);
                     }
                     else //if (dataExists.ReasonId != 0)
                     {
                         return Ok(item.ReasonCode + " already exists");
                     }
-                   
+
                 }
             }
             return Ok();
         }
 
+        [HttpPost]
+        [Route("AddNewReasoncode")]
+        //public IActionResult Addreasoncode(string reasoncodename, [FromBody] MetricbasedreasoncodeDetails reasonCodes, reasoncodename)
+        public IActionResult Addreasoncode([FromBody] MetricbasedreasoncodeDetails reasonCodes)
+        {
+            if (ModelState.IsValid)
+            {
+                //var reasocode = reasonCodes.MetricreasoncodeviewDetails.ReasonCode;
+                //reasocode.Reason
+                var data = _context.ReasonCodes.FirstOrDefault(c => c.ReasonCode == reasonCodes.reasoncodename);
+                //var data = _context.ReasonCodes.FirstOrDefault(c => c.ReasonCode == reasonCodes);
+                if (data == null)
+                {
+                    foreach (var item in reasonCodes.MetricreasoncodeviewDetails)
+                    {
+                        ReasonCodes codes = new ReasonCodes();
+                        codes.ReasonCode = reasonCodes.reasoncodename;
+                        //codes.Flag = item.Flag;
+                        _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId, (int)item.Flag);
+                    }
+                }
+                else
+                {
+                    return Ok(reasonCodes.reasoncodename + " already exists");
+
+                }
+            }
+            return Ok();
+        }
         [HttpPut]
         [Route("Reasoncodeupdate")]
         public IActionResult UpdateFlag([FromBody] MetricbasedreasoncodeDetails rc)
@@ -84,8 +113,8 @@ namespace corrsDashboard.Controllers
                 foreach (var item in rc.MetricDetails)
                 {
                     //var data = _context.Corrsmetricreasoncodedependency.FirstOrDefault(s => s.Reason.ReasonCodeId == item.Reason.ReasonCodeId && s.MetricId == item.MetricId);
-                   var data =_context.Corrsmetricreasoncodedependency
-                        .Include(r => r.Reason).FirstOrDefault(s => s.ReasonId == item.ReasonId && s.MetricId == item.MetricId);
+                    var data = _context.Corrsmetricreasoncodedependency
+                         .Include(r => r.Reason).FirstOrDefault(s => s.ReasonId == item.ReasonId && s.MetricId == item.MetricId);
 
                     if (data != null)
                     {
@@ -97,7 +126,7 @@ namespace corrsDashboard.Controllers
                     }
                 }
             }
- 
+
             return Ok();
         }
         public IActionResult Index()
@@ -105,4 +134,5 @@ namespace corrsDashboard.Controllers
             return View();
         }
     }
+
 }

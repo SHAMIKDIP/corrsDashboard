@@ -9,6 +9,6 @@ namespace corrsDashboard.IRepositories
     public interface IAddreasoncode
     {
         Task<List<Metricbasedreasoncodeview>> Getallreasoncode();
-        void AddReasonCodes(ReasonCodes reasonCodes, int metricId);
+        void AddReasonCodes(ReasonCodes reasonCodes, int metricId, int Flag);
     }
 }

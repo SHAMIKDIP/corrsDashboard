@@ -10,5 +10,6 @@ namespace corrsDashboard.ViewModel
     {
         public List<Metricbasedreasoncodeview> MetricreasoncodeviewDetails { get; set; }
         public List<Corrsmetricreasoncodedependency> MetricDetails { get; set; }
+        public string reasoncodename {get ; set;}
     }
 }
