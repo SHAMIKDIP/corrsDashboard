@@ -54,7 +54,8 @@ namespace corrsDashboard
             {
                 app.UseDeveloperExceptionPage();
             }
-           // app.UseCors(options => options.AllowAnyOrigin());
+           
+            // app.UseCors(options => options.AllowAnyOrigin());
             app.UseHttpsRedirection();
             // app.UseMvc();
            

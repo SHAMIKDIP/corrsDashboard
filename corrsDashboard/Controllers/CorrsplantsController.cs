@@ -19,6 +19,7 @@ namespace corrsDashboard.Controllers
     {
         private readonly ICorrsplants _corrsPlants;
         private readonly corrsdatabaseContext _context;
+        //private ILoggerManager _logger;
         public CorrsplantsController(ICorrsplants corrsPlants, corrsdatabaseContext context)
         {
             _corrsPlants = corrsPlants;
@@ -29,7 +30,15 @@ namespace corrsDashboard.Controllers
         [Route("GetAllPlantID")]
         public dynamic getplant()
         {
-            return _corrsPlants.getplant();
+            try
+            {
+                return _corrsPlants.getplant();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
         }
 
         [HttpPut]
@@ -37,32 +46,51 @@ namespace corrsDashboard.Controllers
         public IActionResult UpdateFlag([FromBody] corrsplantsList cp)
        
         {
-            if (ModelState.IsValid)
+            try
             {
-                foreach (var item in cp.getCorrsplantlist)
+                if (ModelState.IsValid)
                 {
-                    var data = _context.Corrsplants.FirstOrDefault(s => s.PlantId == item.PlantId);
-                    
-                    if (data != null)
+                    foreach (var item in cp.getCorrsplantlist)
                     {
+                        var data = _context.Corrsplants.FirstOrDefault(s => s.PlantId == item.PlantId);
 
-                        data.Flag = item.Flag;
-                        _context.Corrsplants.Update(data);
-                        _context.Entry(data).State = EntityState.Modified;
-                        _context.SaveChanges();
+                        if (data != null)
+                        {
+
+                            data.Flag = item.Flag;
+                            _context.Corrsplants.Update(data);
+                            _context.Entry(data).State = EntityState.Modified;
+                            _context.SaveChanges();
+                        }
+
+
                     }
-                    
-                    
                 }
+                return Ok();
+            }
+            catch {
+                return BadRequest();
             }
 
-            return Ok();
+
+
+            
         }
 
         [HttpPost]
-        [Route("Saveplantdetails")]
-        IActionResult Create([FromBody] corrsplantsList reasonCodes)
+        [Route("Createnewplant")]
+        public IActionResult Createnewplant([FromBody] Corrsplants corsplantsdetails )
         {
+            var data = _context.Corrsplants.FirstOrDefault(c => c.PlantId == corsplantsdetails.PlantId);
+            if (data == null)
+            {
+                _context.Corrsplants.Add(corsplantsdetails);
+                _context.SaveChanges();
+            }
+            else
+            {
+                return Ok(corsplantsdetails.PlantId + " already exists");
+            }
             return Ok();
         }
 
