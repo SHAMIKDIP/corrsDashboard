@@ -35,7 +35,7 @@ export class RestAPIService {
   }
 
   SaveReasonCode(data:any): Observable<any>{
-    return this.httpClient.post(this.api+'/AddReasonCode/SaveReasoncode',data)
+    return this.httpClient.post(this.api+'/AddReasonCode/AddNewReasoncode',data)
   }
 
   EnableReasonSave(data:any):Observable<any>{
@@ -48,6 +48,10 @@ export class RestAPIService {
 
   EnablePlants(data:any):Observable<any>{
     return this.httpClient.put(this.api+'/Corrsplants/plantidUpdate', data)
+  }
+
+  AddNewPlant(data:any):Observable<any>{
+    return this.httpClient.post(this.api+'/Corrsplants/Createnewplant', data)
   }
 
 }

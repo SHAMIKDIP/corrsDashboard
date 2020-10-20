@@ -128,3 +128,12 @@ function FilterData(data){
   }
   return e
 }
+
+function FilterPlantData(data){
+  var e = []
+  for (let i = 0; i < data.length; i++) {
+    var c = data[i].plantDomain
+    e.push(c)
+  }
+  return e
+}

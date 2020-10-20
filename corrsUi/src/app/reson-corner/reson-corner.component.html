@@ -63,7 +63,6 @@
             </div>
         </div>
     </form>
-    
     <div class="row">
         <p *ngIf="SaveMessage != ''" class="alert alert-success" role="alert"><strong>{{selectedRow.length}}</strong> {{SaveMessage}}</p>
         <p *ngIf="SaveMessageErr != ''" class="alert alert-danger" role="alert">{{SaveMessageErr}}</p>
@@ -150,3 +149,4 @@
     </p>
   </ng-template>
   <button class="btn btn-lg btn-outline-primary" style="display: none;" id="openModal" (click)="open(content)"></button>
+  <common-spinner *ngIf="Loading"></common-spinner>

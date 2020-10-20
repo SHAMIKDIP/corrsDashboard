@@ -50,10 +50,12 @@ export class ResonCornerComponent implements OnInit {
   SaveMessageErr:string = ''
   MessageSuccessModal:string = ''
   MessageErrorModal:string = ''
+  Loading:boolean = false
 
   constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
   ngOnInit(): void {
+    this.Loading = true
     this.sendGetRequest()
   }
   sendGetRequest(){
@@ -62,6 +64,9 @@ export class ResonCornerComponent implements OnInit {
       let newVal = FilterData(this.PlantVal)
       newVal = newVal.filter((item, index) => newVal.indexOf(item) === index)
       this.PlantFilter = newVal
+      this.Loading = false
+    },(error) => {
+      this.SuccessModal(0,0)
     })
     var result = this.getWeekNumber(new Date())
     var range = GetWeekArr(result)    
@@ -125,6 +130,7 @@ export class ResonCornerComponent implements OnInit {
         'Access-Control-Allow-Origin': '*'
       })
     }
+    this.Loading = true
     this.restApiService.GetMissedOrders(obj).subscribe((result)=>{ 
       if(result){
         this.data = result[0] == '' ? null : result[0]
@@ -132,6 +138,9 @@ export class ResonCornerComponent implements OnInit {
       }else{
         this.data = null
       }
+      this.Loading = false
+    },(error) => {
+      this.SuccessModal(0, 0)
     })
   }
   selectReason(e:any, ind:any, dat:any){
@@ -183,14 +192,10 @@ export class ResonCornerComponent implements OnInit {
       this.MessageSuccessModal = ''
       this.MessageErrorModal = ''
       this.restApiService.SaveData(saveData).subscribe((result) => {
-        this.MessageSuccessModal = d.length + ' Record has been updated successfully !'
-        document.getElementById('openModal').click()
-        setTimeout (() => {
-          this.selectedRow = []
-        }, 100)
+        this.selectedRow = []
+        this.SuccessModal(1, d.length)
       },(error) => {
-        this.MessageErrorModal = 'Something went wrong. Please try again later'
-        document.getElementById('openModal').click()
+        this.SuccessModal(0, 0)
       })
     }else{
       this.NoSelect = true
@@ -198,5 +203,17 @@ export class ResonCornerComponent implements OnInit {
   }
   open(content:any){
     this.CommonModal.open(content)
+  }
+
+  SuccessModal(sts:any, num:any){
+    this.MessageSuccessModal = ''
+    this.MessageErrorModal = ''
+    this.Loading = false
+    if(sts == 1){
+      this.MessageSuccessModal = num + ' Record has been updated successfully !'
+    }else{
+      this.MessageErrorModal = 'Something went wrong. Please try again later'
+    }
+    document.getElementById('openModal').click()
   }
 }
