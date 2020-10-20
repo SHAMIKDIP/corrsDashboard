@@ -139,6 +139,7 @@
       </div>
     </div>
     <div class="tab-pane fade" id="enablePlant" role="tabpanel" aria-labelledby="add-plant-tab">
+      <p *ngIf="PlantEnableSelect" class="alert alert-danger" style="width: 100%;">Please select a Plant</p>
       <div class="row" style="position: relative;">
         <p *ngIf="PlantData != ''" class="text-right col-md-12 save-icon">
           <i class="fa fa-save pointer" title="save" (click)="enablePlantSave()"></i>

@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit {
   PlantIdName:any
   PlantIdNameErr:any = ''
   PlantIdNameErrBol:boolean = false
+  PlantEnableSelect:boolean = false
 
   constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
@@ -215,13 +216,13 @@ export class DashboardComponent implements OnInit {
       }
       
       this.restApiService.AddNewPlant(d).subscribe((result)=>{
-        this.SuccessModal(1,0)
+        this.SuccessModal(4,0)
       },(error) => {
-        // if(error){
-        //   this.SuccessModal(error.error.text,0)
-        // }else{
+        if(error.error.text){
+          this.SuccessModal(error.error.text,0)
+        }else{
           this.SuccessModal(0,0)
-        // }
+        }
       })
     }
   }
@@ -237,6 +238,7 @@ export class DashboardComponent implements OnInit {
   }
   
   enablePlant(e:any, i:any, d:any){
+    this.PlantEnableSelect = false
     this.PlantSelected = this.PlantSelected.filter(fi => fi.PlantId != d.plantId)
     this.PlantSelected.push({
       "Flag": e.target.checked ? 1 : 0,
@@ -245,16 +247,20 @@ export class DashboardComponent implements OnInit {
   }
 
   enablePlantSave(){
-    let d = {
-      "getCorrsplantlist":this.PlantSelected
+    if(this.PlantSelected != ''){
+      let d = {
+        "getCorrsplantlist":this.PlantSelected
+      }
+      this.Loading = true
+      this.restApiService.EnablePlants(d).subscribe((result) => {
+        this.SuccessModal(3,this.PlantSelected.length)
+        this.PlantSelected = []
+      },(error) => {
+        this.SuccessModal(0,0)
+      })
+    }else{
+      this.PlantEnableSelect = true
     }
-    this.Loading = true
-    this.restApiService.EnablePlants(d).subscribe((result) => {
-      this.SuccessModal(3,this.PlantSelected.length)
-      this.PlantSelected = []
-    },(error) => {
-      this.SuccessModal(0,0)
-    })
   }
 
   SuccessModal(sts:any, num:any){
@@ -267,6 +273,8 @@ export class DashboardComponent implements OnInit {
       this.MessageSuccessModal = 'Reason name saved successfully !'
     }else if(sts == 3){
       this.MessageSuccessModal = 'Selected records has been updated successfully !'
+    }else if(sts == 4){
+      this.MessageSuccessModal = 'Plant name saved successfully !'
     }else if(sts == 0){
       this.MessageErrorModal = 'Something went wrong. Please try again later'
     }else{
