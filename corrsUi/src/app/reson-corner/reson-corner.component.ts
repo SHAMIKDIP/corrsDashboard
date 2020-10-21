@@ -10,6 +10,9 @@ declare const GetWeekArr: any
 declare const validateRowReasonSelect: any
 declare const validateRowCheck: any
 declare const FilterData: any
+declare const DatePicker:any
+declare const GetWeek:any
+declare const GetWeekLabel:any
 
 @Component({
   selector: 'app-reson-corner',
@@ -51,12 +54,15 @@ export class ResonCornerComponent implements OnInit {
   MessageSuccessModal:string = ''
   MessageErrorModal:string = ''
   Loading:boolean = false
+  ErrCount:number = 0
+  Weekval:any = ''
 
   constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
   ngOnInit(): void {
     this.Loading = true
     this.sendGetRequest()
+    DatePicker()
   }
   sendGetRequest(){
     this.restApiService.GetPlantId().subscribe((result)=>{ 
@@ -89,13 +95,11 @@ export class ResonCornerComponent implements OnInit {
       let getMetric = this.MetricVal.filter(mId => mId.metricName === e.target.options[e.target.options.selectedIndex].text)
       this.MetricId = getMetric[0].metricId
     }
-    if(code === 3){
-      this.Period = e.target.value
-      this.WeekLabel = e.target.options[e.target.selectedIndex].text
-    }
     this.ValidateForm()
   }
   ValidateForm(){
+    this.Period = GetWeek()
+    this.WeekLabel = GetWeekLabel()
     if(this.Plant == '' || this.Plant == undefined){
       this.PlantErr = true
     }else{
@@ -143,60 +147,106 @@ export class ResonCornerComponent implements OnInit {
       this.SuccessModal(0, 0)
     })
   }
-  selectReason(e:any, ind:any, dat:any){
-    let name = 'check'+ind
-    this.selectedRow = this.selectedRow.filter(reason => reason.IDCheck != name)
-    this.selectedRow.push({
-      "resource": dat.resource,
-      "flag": validateRowReasonSelect(e, ind, dat, this.MetricId),
-      "processOrder":dat.processOrder,
-      "ReasonCodeId": e.target.value,
-      "MetricId":this.MetricId,
-      "IDCheck": 'check'+ind,
-      "IdSel": 'select'+ind
-    })
-  }
-  selectHit(e:any, ind:any, dat:any){
-    let name = 'check'+ind
-    this.selectedRow = this.selectedRow.filter(reason => reason.IDCheck != name)
-    this.selectedRow.push({
-      "resource": dat.resource,
-      "flag": e.target.checked ? "Hit" : "Miss",
-      "processOrder":dat.processOrder,
-      "ReasonCodeId": validateRowCheck(e, ind, dat, this.MetricId),
-      "MetricId":this.MetricId,
-      "IDCheck": 'check'+ind,
-      "IdSel": 'select'+ind
-    })
+
+  selectHit(e:any, ind:any, dat:any, f:any){
+    console.log(this.Weekval)
+    let reasonCodId = dat.reasonCodeId || ''
+    let selectVal = validateRowCheck(ind)
+    let checkVal = validateRowReasonSelect(ind)
+    let IDCheck = 'check'+ind
+    let IdSel = 'select'+ind
+    let reasonCornerFlag = dat.reasonCornerFlag == 1 ? 'Hit' : 'Miss'
+    console.log("IDCheck ", checkVal)
+    console.log("IdSel ", selectVal)
+    if(f == 'select'){
+      selectVal = e.target.value
+    }else{
+      checkVal = e.target.checked ? 'Hit' : 'Miss'
+    }
+    this.selectedRow = this.selectedRow.filter(reason => reason.IdSel != IdSel)
+    if(selectVal == reasonCodId && checkVal == reasonCornerFlag){
+      let elmt = document.getElementById('select'+ind)
+      elmt.classList.remove('error')
+      this.ErrCount = this.ErrCount > 0 ? this.ErrCount - 1 : this.ErrCount
+    }else{
+      if(checkVal == "Hit" && selectVal == ''){
+        let elmt = document.getElementById('select'+ind)
+        elmt.classList.add('error')
+        this.ErrCount = this.ErrCount + 1
+      }else{
+        let elmt = document.getElementById('select'+ind)
+        elmt.classList.remove('error')
+        this.ErrCount = this.ErrCount > 0 ? this.ErrCount - 1 : this.ErrCount
+        this.selectedRow.push({
+          "resource": dat.resource,
+          "flag": checkVal,
+          "processOrder":dat.processOrder,
+          "ReasonCodeId": selectVal,
+          "MetricId":this.MetricId,
+          "IDCheck": IDCheck,
+          "IdSel": IdSel
+        })
+      }
+    }
+
+    // let nameCheck = 'check'+ind
+    // let nameSel = 'select'+ind
+    // let elmt = document.getElementById('select'+ind)
+    // let ReasonCodeId = validateRowCheck(ind)
+    // this.selectedRow = this.selectedRow.filter(reason => reason.IDCheck != name)
+    // if((dat.flag == 'Miss' && e.target.checked) || (dat.flag == 'Hit' && !e.target.checked)){
+    //   this.selectedRow.push({
+    //     "resource": dat.resource,
+    //     "flag": e.target.checked ? "Hit" : "Miss",
+    //     "processOrder":dat.processOrder,
+    //     "ReasonCodeId": ReasonCodeId,
+    //     "MetricId":this.MetricId,
+    //     "IDCheck": 'check'+ind,
+    //     "IdSel": 'select'+ind
+    //   })
+    // }else{
+    //   elmt.classList.remove('error')
+    //   this.ErrCount = this.ErrCount - 1
+    // }
+    // if(e.target.checked && ReasonCodeId == ''){
+    //   elmt.classList.add('error')
+    //   this.ErrCount = this.ErrCount+1
+    // }
   }
 
   reasonSave(){
     if(this.selectedRow != ''){
-      let d = []
-      for(let e = 0;e<this.selectedRow.length;e++){
-        d.push(
-          {
-            "resource":this.selectedRow[e].resource,
-            "flag":this.selectedRow[e].flag,
-            "processOrder":this.selectedRow[e].processOrder,
-            "ReasonCodeId": this.selectedRow[e].ReasonCodeId ? parseInt(this.selectedRow[e].ReasonCodeId) : null,
-            "MetricId":this.selectedRow[e].MetricId,
-            "reasoncornerflag": this.selectedRow[e].flag == 'Hit' ? 1 : 0
-          }
-        )
+      if(this.ErrCount > 0){
+        this.SuccessModal(2,this.ErrCount)
+      }else{
+        console.log(this.ErrCount)
+        let d = []
+        for(let e = 0;e<this.selectedRow.length;e++){
+          d.push(
+            {
+              "resource":this.selectedRow[e].resource,
+              "flag":this.selectedRow[e].flag,
+              "processOrder":this.selectedRow[e].processOrder,
+              "ReasonCodeId": this.selectedRow[e].ReasonCodeId ? parseInt(this.selectedRow[e].ReasonCodeId) : null,
+              "MetricId":this.selectedRow[e].MetricId,
+              "reasoncornerflag": this.selectedRow[e].flag == 'Hit' ? 1 : 0
+            }
+          )
+        }
+        // console.log(d)
+        let saveData = {​​​​​​​
+          "shopFloorMetricDetails": d
+        }​​​​​​​
+        this.MessageSuccessModal = ''
+        this.MessageErrorModal = ''
+        this.restApiService.SaveData(saveData).subscribe((result) => {
+          this.SubmitForm()
+          this.selectedRow = []
+          this.SuccessModal(1, d.length)
+        },(error) => {
+          this.SuccessModal(0, 0)
+        })
       }
-      // console.log(d)
-      let saveData = {​​​​​​​
-        "shopFloorMetricDetails": d
-      }​​​​​​​
-      this.MessageSuccessModal = ''
-      this.MessageErrorModal = ''
-      this.restApiService.SaveData(saveData).subscribe((result) => {
-        this.selectedRow = []
-        this.SuccessModal(1, d.length)
-      },(error) => {
-        this.SuccessModal(0, 0)
-      })
     }else{
       this.NoSelect = true
     }
@@ -211,6 +261,8 @@ export class ResonCornerComponent implements OnInit {
     this.Loading = false
     if(sts == 1){
       this.MessageSuccessModal = num + ' Record has been updated successfully !'
+    }else if(sts == 2){
+      this.MessageErrorModal = 'Please fill all mandatory fields before save'
     }else{
       this.MessageErrorModal = 'Something went wrong. Please try again later'
     }

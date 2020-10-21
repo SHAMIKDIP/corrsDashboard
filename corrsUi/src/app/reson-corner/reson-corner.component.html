@@ -2,8 +2,7 @@
     <h4 class="padding-20">Reason Corner</h4>
     <h6>Please update the reason code for the missed orders</h6>
     <form class="padding-20">
-       
-        <div class="row">
+        <div class="row search-wrap">
             <div class="col-md-3">
                 <div class="col-md-12 form-row no-padding" style="padding-bottom: 6px;">
                     <div class="col-sm-3 col-form-label">
@@ -46,13 +45,18 @@
                         <label>Period</label>
                     </div>
                     <div class="col-sm-9 no-padding">
-                        <div class="col-md-12 no-padding">
-                            <select class="form-control" (change)="selectChange($event,3)" [ngClass]="{'error': PeriodErr}">
+                        <div class="input-group" id="DateDemo">
+                            <div class="col-sm-12 no-padding">
+                                <input id='weeklyDatePickerHidden' type="hidden"/>
+                                <input autocomplete="off" [ngClass]="{'error': PeriodErr}" onkeydown="event.preventDefault()" style="cursor: pointer;" class="form-control" id='weeklyDatePicker' placeholder="Please select a week" type="text"/>
+                                <label for="weeklyDatePicker"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+                            </div>
+                            <!-- <select class="form-control" (change)="selectChange($event,3)" [ngClass]="{'error': PeriodErr}">
                                 <option value="" >Please Selct...</option>
                                 <option [value]="options.value" *ngFor="let options of PeriodVal">{{options.label}}</option>
-                            </select>
+                            </select> -->
                         </div>
-                        <div class="col-md-12 no-padding" *ngIf="PeriodErr">
+                        <div class="col-md-12 no-padding" id="hideErr" *ngIf="PeriodErr">
                             <span class="text-danger">Please select a value</span>
                         </div>
                     </div>
@@ -93,7 +97,7 @@
                         <td>{{dat.orderQuantity}}</td>
                         <td>{{dat.finishDateScheduled}}</td>
                         <td>
-                            <select class="form-control" [value]="dat.reasonCodeId" id="select{{i}}" (change)="selectReason($event, i, dat)">
+                            <select class="form-control" [value]="dat.reasonCodeId" id="select{{i}}" (change)="selectHit($event, i, dat, 'select')">
                                 <option value="">Please select</option>
                                 <option 
                                 [attr.selected]="dat.reasonCodeId==resCd.reasonCodeId ? true : null"
@@ -103,7 +107,7 @@
                         <td>
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" [attr.checked]="dat.reasonCornerFlag ? true : null"
-                                class="custom-control-input" id="check{{i}}" (change)="selectHit($event, i, dat)">
+                                class="custom-control-input" id="check{{i}}" (change)="selectHit($event, i, dat, 'check')">
                                 <label class="custom-control-label" for="check{{i}}"></label>
                             </div>
                         </td>

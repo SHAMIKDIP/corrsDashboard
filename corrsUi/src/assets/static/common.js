@@ -51,74 +51,12 @@ function GetWeekArr(result){
     return range
 }
 
-function validateRowReasonSelect(e, i, d, m){
+function validateRowReasonSelect(i){
   var checkVal = document.getElementById('check'+i).checked
-  // var name = e.target.value
   return checkVal ? "Hit" : "Miss"
-  // var saveData = {
-  //   "resource": d.resource,
-  //   "flag": checkVal,
-  //   "processOrder":d.processOrder,
-  //   "ReasonCodeId":name,
-  //   "MetricId":m,
-  //   "IDCheck": 'check'+i,
-  //   "IdSel": 'select'+i
-  // }
-  // if((!saveData.flag && saveData.ReasonCodeId == '') || (saveData.flag && saveData.ReasonCodeId != '')){
-  //   var checkSel = document.getElementById('select'+i)
-  //   var check = document.getElementById('check'+i)
-  //   checkSel.classList.remove("error")
-  //   check.nextSibling.classList.remove("err-border")
-  // }else if(saveData.flag && saveData.ReasonCodeId == ''){
-  //   var checkSel = document.getElementById('select'+i)
-  //   var check = document.getElementById('check'+i)
-  //   checkSel.classList.add("error")
-  //   check.nextSibling.classList.remove("err-border")
-  // }else if(!saveData.flag && saveData.ReasonCodeId != ''){
-  //   var checkSel = document.getElementById('select'+i)
-  //   var check = document.getElementById('check'+i)
-  //   checkSel.classList.remove("error")
-  //   check.nextSibling.classList.add("err-border")
-  // }
-  // if(saveData.flag && saveData.ReasonCodeId != ''){
-  //   saveData.flag = saveData.flag ? 'Hit' : false
-  //   saveData.ReasonCodeId  = saveData.ReasonCodeId != '' ? parseInt(saveData.ReasonCodeId) : ''
-  //   return saveData
-  // }
 }
-function validateRowCheck(e, i, d, m){
+function validateRowCheck(i){
   return checkVal = document.getElementById('select'+i).value
-  // var name = e.target.checked
-  // var saveData = {
-  //   "resource": d.resource,
-  //   "flag": name,
-  //   "processOrder":d.processOrder,
-  //   "ReasonCodeId":checkVal,
-  //   "MetricId":m,
-  //   "IDCheck": 'check'+i,
-  //   "IdSel": 'select'+i
-  // }
-  // if((!saveData.flag && saveData.ReasonCodeId == '') || (saveData.flag && saveData.ReasonCodeId != '')){
-  //   var checkSel = document.getElementById('select'+i)
-  //   var check = document.getElementById('check'+i)
-  //   checkSel.classList.remove("error")
-  //   check.nextSibling.classList.remove("err-border")
-  // }else if(saveData.flag && saveData.ReasonCodeId == ''){
-  //   var checkSel = document.getElementById('select'+i)
-  //   var check = document.getElementById('check'+i)
-  //   checkSel.classList.add("error")
-  //   check.nextSibling.classList.remove("err-border")
-  // }else if(!saveData.flag && saveData.ReasonCodeId != ''){
-  //   var checkSel = document.getElementById('select'+i)
-  //   var check = document.getElementById('check'+i)
-  //   checkSel.classList.remove("error")
-  //   check.nextSibling.classList.remove("err-border")
-  // }
-  // if(saveData.flag && saveData.ReasonCodeId != ''){
-  //   saveData.flag = saveData.flag ? 'Hit' : false
-  //   saveData.ReasonCodeId  = saveData.ReasonCodeId != '' ? parseInt(saveData.ReasonCodeId) : ''
-  //   return saveData
-  // }
 }
 function FilterData(data){
   var e = []
@@ -136,4 +74,46 @@ function FilterPlantData(data){
     e.push(c)
   }
   return e
+}
+function DatePicker(){
+  $("#weeklyDatePicker").datetimepicker({
+    format: 'MM-DD-YYYY',
+    minDate: moment().subtract(1, 'y'),
+    maxDate: moment(),
+    calendarWeeks: true,
+    useCurrent: false
+  })
+
+  var newValDisp = ''
+  $('#weeklyDatePicker').on('dp.hide', function (e) {
+    $("#weeklyDatePicker").val(newValDisp)
+  })
+
+  $('#weeklyDatePicker').on('dp.change', function (e) {
+    value = $("#weeklyDatePicker").val();
+    firstDate = moment(value, "MM-DD-YYYY").day(0).format("MM-DD-YYYY");
+    lastDate =  moment(value, "MM-DD-YYYY").day(6).format("MM-DD-YYYY");
+    firstDate = firstDate.split('-')
+    lastDate = lastDate.split('-')
+    var week = e.date.week() || ''
+    var endYear = lastDate[2] || ''
+    var endMonth = lastDate[1] || ''
+    var startdate = firstDate[0] || ''
+    var endDate = lastDate[0] || ''
+    var startMonth = firstDate[0] || ''
+    var startYear = firstDate[2] || ''
+    newValDisp = 'W'+week+' ('+startMonth+'/'+startdate+'/'+startYear+'-'+endMonth+'/'+endDate+'/'+endYear+')'
+    $("#weeklyDatePicker").val(newValDisp)
+    $("#weeklyDatePickerHidden").val(week)
+    $('#hideErr').hide()
+    $("#weeklyDatePicker").removeClass('error')
+  })
+}
+
+function GetWeek(){
+  return $("#weeklyDatePickerHidden").val()
+}
+
+function GetWeekLabel(){
+  return $("#weeklyDatePicker").val()
 }
