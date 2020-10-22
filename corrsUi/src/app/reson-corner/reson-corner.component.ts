@@ -141,6 +141,7 @@ export class ResonCornerComponent implements OnInit {
       "metricid": this.MetricId
     }
     this.Loading = true
+    this.data = null
     this.restApiService.GetMissedOrders(obj).subscribe((result)=>{ 
       if(result){
         this.data = result[0] == '' ? null : result[0]
