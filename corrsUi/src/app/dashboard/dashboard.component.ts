@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Component, OnInit, Injectable } from '@angular/core';
 import {RestAPIService} from '../api-service/ApiService'
 import { CommonModal } from '../modal/Modal'
 
 declare const FilterPlantData:any
+@Injectable()
 
 @Component({
   selector: 'app-dashboard',
@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
   PlantIdNameErr:any = ''
   PlantIdNameErrBol:boolean = false
   PlantEnableSelect:boolean = false
+  UserData:any
 
   constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
@@ -162,6 +163,8 @@ export class DashboardComponent implements OnInit {
   changeTab(t:any){
     if(t == 1){
       this.GetMetricName()
+    }else if(t==4){
+      this.GetPlant()
     }
   }
   PlantTextareaChange(e:any){
@@ -228,12 +231,16 @@ export class DashboardComponent implements OnInit {
   }
 
   GetPlant(){
+    this.PlantData = ''
+    this.Loading = true
     this.restApiService.GetPlantData().subscribe((result) =>{
       this.PlantData = result
       let dmianVal = FilterPlantData(this.PlantData)
       let newVal = dmianVal.filter((item, index) => dmianVal.indexOf(item) === index)
       this.PlantDomain = newVal
-      console.log(this.PlantDomain)
+      this.Loading = false
+    },(error) => {
+      this.SuccessModal(0,0)
     })  
   }
   
@@ -255,6 +262,7 @@ export class DashboardComponent implements OnInit {
       this.restApiService.EnablePlants(d).subscribe((result) => {
         this.SuccessModal(3,this.PlantSelected.length)
         this.PlantSelected = []
+        this.GetPlant()
       },(error) => {
         this.SuccessModal(0,0)
       })

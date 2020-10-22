@@ -43,7 +43,9 @@ export class ResonCornerComponent implements OnInit {
     pageLength: 5,
     lengthMenu : [5, 10, 15],
     processing: true,
-    "searching": false
+    "searching": false,
+    "columnDefs": [{ targets: 'no-sort', orderable: false }],
+    "order": [[ 5, "desc" ]]//asc
   }
   selectedRow:any = []
   SaveMessage:string = ''
@@ -56,6 +58,7 @@ export class ResonCornerComponent implements OnInit {
   Loading:boolean = false
   ErrCount:number = 0
   Weekval:any = ''
+  UserData:any
 
   constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
@@ -63,6 +66,15 @@ export class ResonCornerComponent implements OnInit {
     this.Loading = true
     this.sendGetRequest()
     DatePicker()
+    // this.restApiService.GetUserService().subscribe((result)=>{
+
+    // },(error)=>{
+    //   this.UserData = {
+    //     "Name": 'Binu',
+    //     "Role": 'Admin'
+    //   }
+    //   console.log(this.UserData)
+    // })
   }
   sendGetRequest(){
     this.restApiService.GetPlantId().subscribe((result)=>{ 
@@ -128,12 +140,6 @@ export class ResonCornerComponent implements OnInit {
       "week": parseInt(this.Period),
       "metricid": this.MetricId
     }
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      })
-    }
     this.Loading = true
     this.restApiService.GetMissedOrders(obj).subscribe((result)=>{ 
       if(result){
@@ -188,30 +194,6 @@ export class ResonCornerComponent implements OnInit {
         })
       }
     }
-
-    // let nameCheck = 'check'+ind
-    // let nameSel = 'select'+ind
-    // let elmt = document.getElementById('select'+ind)
-    // let ReasonCodeId = validateRowCheck(ind)
-    // this.selectedRow = this.selectedRow.filter(reason => reason.IDCheck != name)
-    // if((dat.flag == 'Miss' && e.target.checked) || (dat.flag == 'Hit' && !e.target.checked)){
-    //   this.selectedRow.push({
-    //     "resource": dat.resource,
-    //     "flag": e.target.checked ? "Hit" : "Miss",
-    //     "processOrder":dat.processOrder,
-    //     "ReasonCodeId": ReasonCodeId,
-    //     "MetricId":this.MetricId,
-    //     "IDCheck": 'check'+ind,
-    //     "IdSel": 'select'+ind
-    //   })
-    // }else{
-    //   elmt.classList.remove('error')
-    //   this.ErrCount = this.ErrCount - 1
-    // }
-    // if(e.target.checked && ReasonCodeId == ''){
-    //   elmt.classList.add('error')
-    //   this.ErrCount = this.ErrCount+1
-    // }
   }
 
   reasonSave(){
@@ -233,7 +215,6 @@ export class ResonCornerComponent implements OnInit {
             }
           )
         }
-        // console.log(d)
         let saveData = {​​​​​​​
           "shopFloorMetricDetails": d
         }​​​​​​​
