@@ -9,6 +9,7 @@ using corrsDashboard.ViewModel;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace corrsDashboard.Controllers
 {
@@ -21,10 +22,12 @@ namespace corrsDashboard.Controllers
         private readonly corrsdatabaseContext _context;
         public ReasonCodes _reasoncodes;
         public Corrsmetricreasoncodedependency _metricdetails;
-        public AddReasonCodeController(IAddreasoncode iaddreasoncode, corrsdatabaseContext context)
+        private readonly ILogger<AddReasonCodeController> _logger;
+        public AddReasonCodeController(IAddreasoncode iaddreasoncode, corrsdatabaseContext context, ILogger<AddReasonCodeController> logger)
         {
             _iaddreasoncode = iaddreasoncode;
             _context = context;
+            _logger = logger;
         }
         [HttpGet]
         [Route("Getallreasoncode")]
@@ -32,16 +35,20 @@ namespace corrsDashboard.Controllers
         {
             try
             {
+                _logger.LogInformation("Invoked get method inside AddReasonCodeController");
                 var categories = await _iaddreasoncode.Getallreasoncode();
+                
                 if (categories == null)
                 {
                     return NotFound();
                 }
 
+                _logger.LogInformation("Extracted array information such as reasoncode, reasoncodeid, metricid,metricname,flag");
                 return Ok(categories);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest();
             }
 
@@ -80,29 +87,39 @@ namespace corrsDashboard.Controllers
         //public IActionResult Addreasoncode(string reasoncodename, [FromBody] MetricbasedreasoncodeDetails reasonCodes, reasoncodename)
         public IActionResult Addreasoncode([FromBody] MetricbasedreasoncodeDetails reasonCodes)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //var reasocode = reasonCodes.MetricreasoncodeviewDetails.ReasonCode;
-                //reasocode.Reason
-                var data = _context.ReasonCodes.FirstOrDefault(c => c.ReasonCode == reasonCodes.reasoncodename);
-                //var data = _context.ReasonCodes.FirstOrDefault(c => c.ReasonCode == reasonCodes);
-                if (data == null)
+                if (ModelState.IsValid)
                 {
-                    foreach (var item in reasonCodes.MetricreasoncodeviewDetails)
+                    //var reasocode = reasonCodes.MetricreasoncodeviewDetails.ReasonCode;
+                    //reasocode.Reason
+                    var data = _context.ReasonCodes.FirstOrDefault(c => c.ReasonCode == reasonCodes.reasoncodename);
+                    //var data = _context.ReasonCodes.FirstOrDefault(c => c.ReasonCode == reasonCodes);
+                    if (data == null)
                     {
-                        ReasonCodes codes = new ReasonCodes();
-                        codes.ReasonCode = reasonCodes.reasoncodename;
-                        //codes.Flag = item.Flag;
-                        _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId, (int)item.Flag);
+                        foreach (var item in reasonCodes.MetricreasoncodeviewDetails)
+                        {
+                            ReasonCodes codes = new ReasonCodes();
+                            codes.ReasonCode = reasonCodes.reasoncodename;
+                            //codes.Flag = item.Flag;
+                            _iaddreasoncode.AddReasonCodes(codes, (int)item.MetricId, (int)item.Flag);
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogInformation("The provided reason code already exists");
+                        return Ok(reasonCodes.reasoncodename + " already exists");
+
                     }
                 }
-                else
-                {
-                    return Ok(reasonCodes.reasoncodename + " already exists");
-
-                }
+                return Ok();
             }
-            return Ok();
+
+            catch(Exception ex) 
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest();
+            }
         }
         [HttpPut]
         [Route("Reasoncodeupdate")]

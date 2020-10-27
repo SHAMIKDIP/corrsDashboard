@@ -34,6 +34,8 @@ namespace corrsDashboard
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
                
             });
+           // services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+            services.AddApplicationInsightsTelemetry();
             services.AddMvc();
            // services.AddControllers().AddNewtonsoftJson();
             var connection = Configuration.GetConnectionString("databaseconnection");
@@ -44,6 +46,7 @@ namespace corrsDashboard
             services.AddScoped<IShopFloorComformance,Shopfloorcomformance>();
             services.AddScoped<IAddreasoncode,Addreasoncode>();
             
+
             //services.AddControllers();
         }
 

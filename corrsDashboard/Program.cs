@@ -21,6 +21,7 @@ namespace corrsDashboard
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                });         
+   
     }
 }

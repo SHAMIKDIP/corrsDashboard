@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>0e212975-553b-49bb-86a8-6b8510931c42</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/765b7ef6-0d12-4313-b67f-11e9e85ee0d6/resourceGroups/BDAZE1ICORSRG01/providers/microsoft.insights/components/BDAZE1ICORSAI01</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
       <!--<PrivateAssets>all</PrivateAssets>-->
