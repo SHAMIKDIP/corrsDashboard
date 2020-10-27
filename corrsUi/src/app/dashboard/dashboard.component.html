@@ -77,14 +77,14 @@
       <textarea [ngClass]="{'error': ReasonTextErrBol}" class="form-control" (change)="ReasonTextareaChange($event)"></textarea>
       <p *ngIf="ReasonTextErr != ''" class="text-danger">{{ReasonTextErr}}</p>
       <div class="row" style="position: relative;">
-        <p *ngIf="FilterValue" class="text-right col-md-12 save-icon">
+        <p *ngIf="FilterValue != ''" class="text-right col-md-12 save-icon">
           <i class="fa fa-save pointer" title="save" (click)="reasonSave()"></i>
         </p>
-        <div *ngIf="FilterValue" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
-            <table class="table table-striped table-sm hover" datatable [dtOptions]="dtOptions">
+        <div *ngIf="FilterValue != ''" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
+            <table id="addReason" class="table table-striped table-sm hover" datatable [dtOptions]="dtOptions">
                 <thead>
                     <tr>
-                        <th width="90%">Reason code</th>
+                        <th width="90%">Metric Name</th>
                         <th width="10%">Enable</th>
                     </tr>
                 </thead>
@@ -101,11 +101,11 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="FilterValue == null" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
+        <div *ngIf="FilterValue == ''" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
             <table class="table table-striped table-sm hover">
                 <thead>
                     <tr>
-                      <th width="90%">Reason code</th>
+                      <th width="90%">Metric Name</th>
                       <th width="10%">Enable</th>
                     </tr>
                 </thead>
@@ -119,78 +119,54 @@
       </div>
     </div>
     <div class="tab-pane fade" id="addPlant" role="tabpanel" aria-labelledby="add-plant-tab">
-      <p *ngIf="PlantEmptyCheck" class="alert alert-danger" style="width: 100%;">Please select a metric Name!</p>
-      <label>Add New Plant</label>
+      <label>Plant Name</label>
       <textarea [ngClass]="{'error': PlantTextErrBol}" class="form-control" (change)="PlantTextareaChange($event)"></textarea>
       <p *ngIf="PlantTextErr != ''" class="text-danger">{{PlantTextErr}}</p>
-      <div class="row" style="position: relative;">
-        <p *ngIf="FilterValue !=''" class="text-right col-md-12 save-icon">
-          <i class="fa fa-save pointer" title="save" (click)="PlantSave()"></i>
-        </p>
-        <div *ngIf="FilterValue != ''" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
-            <table class="table table-striped table-sm hover" datatable [dtOptions]="dtOptions">
-                <thead>
-                    <tr>
-                        <th width="90%">Metric Name</th>
-                        <th width="10%">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let rel of FilterValue let i = index">
-                        <td>{{rel}}</td>
-                        <td>
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="checkMetric{{i}}" (change)="selectPlantMetric($event, i, rel)">
-                            <label class="custom-control-label" for="checkMetric{{i}}"></label>
-                          </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div *ngIf="FilterValue == ''" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
-            <table class="table table-striped table-sm hover">
-                <thead>
-                    <tr>
-                      <th width="90%">Metric Name</th>
-                      <th width="10%">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="2" class="no-data"><i class="fa fa-cloud"></i> <br /> No data available</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <br/>
+      <label>Plant ID</label>
+      <input [ngClass]="{'error': PlantIdNameErrBol}" class="form-control" (change)="PlantIdChange($event)"/>
+      <p *ngIf="PlantIdNameErrBol" class="text-danger">{{PlantIdNameErr}}</p>
+      <br/>
+      <label>Domain</label>
+      <select [ngClass]="{'error': PlantEmptyCheck != ''}" class="form-control" (change)="selectPlantMetric($event)">
+        <option>Please select...</option>
+        <option *ngFor="let rel of PlantDomain" [value]="rel">{{rel}}</option>
+      </select>
+      <p *ngIf="PlantEmptyCheck != ''" class="text-danger">{{PlantEmptyCheck}}</p>
+      <br/>
+      <div style="text-align: center;">
+        <button class="btn btn-primary custom" type="button" (click)="PlantSave()">Save</button>
       </div>
     </div>
     <div class="tab-pane fade" id="enablePlant" role="tabpanel" aria-labelledby="add-plant-tab">
+      <p *ngIf="PlantEnableSelect" class="alert alert-danger" style="width: 100%;">Please select a Plant</p>
       <div class="row" style="position: relative;">
         <p *ngIf="PlantData != ''" class="text-right col-md-12 save-icon">
           <i class="fa fa-save pointer" title="save" (click)="enablePlantSave()"></i>
         </p>
         <div *ngIf="PlantData != ''" class="col-md-12 top-padding-20 table-container table-responsive" style="margin-bottom:50px;">
-            <table class="table table-striped table-sm hover" datatable [dtOptions]="dtOptions">
+            <table id="plantList" class="table table-striped table-sm hover" datatable [dtOptions]="dtOptions">
                 <thead>
                     <tr>
-                        <th width="90%">Plant Name</th>
-                        <th width="10%">Enable</th>
+                      <th width="40%">Plant ID</th>
+                      <th width="50%">Plant Name</th>
+                      <th width="10%">Enable</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let pd of PlantData; let i = index">
-                        <td>{{pd.plantName}}</td>
-                        <td>
-                          <div class="custom-control custom-checkbox" *ngIf="pd.flag == 1">
-                            <input type="checkbox" checked="true" class="custom-control-input" id="enablePlant{{i}}" (change)="enablePlant($event, i, pd)">
-                            <label class="custom-control-label" for="enablePlant{{i}}"></label>
-                          </div>
-                          <div class="custom-control custom-checkbox" *ngIf="pd.flag == 0">
-                            <input type="checkbox" class="custom-control-input" id="enablePlant{{i}}" (change)="enablePlant($event, i, pd)">
-                            <label class="custom-control-label" for="enablePlant{{i}}"></label>
-                          </div>
-                        </td>
+                      <td>{{pd.plantId}}</td>
+                      <td>{{pd.plantName}}</td>
+                      <td>
+                        <div class="custom-control custom-checkbox" *ngIf="pd.flag == 1">
+                          <input type="checkbox" checked="true" class="custom-control-input" id="enablePlant{{i}}" (change)="enablePlant($event, i, pd)">
+                          <label class="custom-control-label" for="enablePlant{{i}}"></label>
+                        </div>
+                        <div class="custom-control custom-checkbox" *ngIf="pd.flag == 0">
+                          <input type="checkbox" class="custom-control-input" id="enablePlant{{i}}" (change)="enablePlant($event, i, pd)">
+                          <label class="custom-control-label" for="enablePlant{{i}}"></label>
+                        </div>
+                      </td>
                     </tr>
                 </tbody>
             </table>
@@ -214,3 +190,4 @@
   </p>
 </ng-template>
 <button class="btn btn-lg btn-outline-primary" style="display: none;" id="openModal" (click)="open(content)"></button>
+<common-spinner *ngIf="Loading"></common-spinner>

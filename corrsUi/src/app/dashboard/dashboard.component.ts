@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Component, OnInit, Injectable } from '@angular/core';
 import {RestAPIService} from '../api-service/ApiService'
 import { CommonModal } from '../modal/Modal'
+
+declare const FilterPlantData:any
+@Injectable()
 
 @Component({
   selector: 'app-dashboard',
@@ -10,8 +12,8 @@ import { CommonModal } from '../modal/Modal'
 })
 export class DashboardComponent implements OnInit {
   ReasonCodeData:any
-  ReasonCodeList:any
-  FilterValue:any
+  ReasonCodeList:any = ''
+  FilterValue:any = ''
   SaveMessage:string
   ReasonText:string = ''
   ReasonTextErr:string
@@ -34,16 +36,24 @@ export class DashboardComponent implements OnInit {
   PlantTextErrBol:boolean = false
   PlantText:string = ''
   PlantMetric:any = []
-  PlantEmptyCheck:boolean = false
+  PlantEmptyCheck:any = ''
   MessageModal:string = ''
   MessageSuccessModal:string = ''
   MessageErrorModal:string = ''
-  PlantData:any
+  PlantData:any = ''
   PlantSelected:any = []
+  Loading:boolean = false
+  PlantDomain:any
+  PlantIdName:any
+  PlantIdNameErr:any = ''
+  PlantIdNameErrBol:boolean = false
+  PlantEnableSelect:boolean = false
+  UserData:any
 
   constructor(private restApiService: RestAPIService, private CommonModal: CommonModal) { }
 
   ngOnInit(): void {
+    this.Loading = true
     this.GetMetricName()
     this.GetPlant()
   }
@@ -58,12 +68,20 @@ export class DashboardComponent implements OnInit {
         e.push(j)
       }
       this.FilterValue = e.filter((item, index) => e.indexOf(item) === index)
+      this.Loading = false
+    },(error)=>{
+      this.SuccessModal(0,0)
     })
   }
 
   selectMetricName(e:any){
     let metricNaveVal = e.target.value
-    this.ReasonCodeList = this.ReasonCodeData.filter(list => list.metricName === metricNaveVal)
+    this.ReasonCodeList = ''
+    this.Loading = true
+    setTimeout(() => {
+      this.ReasonCodeList = this.ReasonCodeData.filter(list => list.metricName === metricNaveVal)
+      this.Loading = false
+    },500);
   }
   ReasonTextareaChange(e:any){
     this.ReasonText =e.target.value
@@ -94,10 +112,11 @@ export class DashboardComponent implements OnInit {
     if(e.target.checked){
       this.SelectMetricCheck.push({
         "MetricId": nr[0].metricId,
-        "ReasonCode": this.ReasonText
+        "MetricName": d,
+        "flag" : e.target.checked ? 1 : 0
       })
     }else{
-      this.SelectMetricCheck = this.SelectMetricCheck.filter(list => list.Metricname != nl)
+      this.SelectMetricCheck = this.SelectMetricCheck.filter(list => list.MetricName != d)
     }
     if(this.SelectMetricCheck != ''){
       this.MetricSelect = false
@@ -110,32 +129,31 @@ export class DashboardComponent implements OnInit {
       this.MetricSelect = true
     }else{
       this.SaveReasonData = {
-        "MetricbasedreasoncodeviewDetails": this.SelectMetricCheck
+        "reasoncodename": this.ReasonText,
+        "MetricreasoncodeviewDetails": this.SelectMetricCheck
       }
-      this.MessageSuccessModal = ''
-      this.MessageErrorModal = ''
       this.restApiService.SaveReasonCode(this.SaveReasonData).subscribe((result) => {
-        this.MessageSuccessModal = 'Reason name saved successfully!'
-        document.getElementById('openModal').click()
+        this.SuccessModal(2,0)
       },(error) => {
-        this.MessageErrorModal = 'Something went wrong. Please try again later'
-        document.getElementById('openModal').click()
+        if(error.error.text){
+          this.SuccessModal(error.error.text,0)
+        }else{
+          this.SuccessModal(0,0)
+        }
       })
     }
   }
   enableReasonSave(){
     if(this.EnableSaveData != ''){
       let d = {
-        "ReasonCodeList": this.EnableSaveData
+        "MetricDetails": this.EnableSaveData
       }
-      this.MessageSuccessModal = ''
-      this.MessageErrorModal = ''
+      this.Loading = true
       this.restApiService.EnableReasonSave(d).subscribe((result) => {
-        this.MessageSuccessModal = 'Selected reason names are updated successfully!'
-        document.getElementById('openModal').click()
+        this.SuccessModal(3,0)
+        this.EnableSaveData = []
       },(error) => {
-        this.MessageErrorModal = 'Something went wrong. Please try again later'
-        document.getElementById('openModal').click()
+        this.SuccessModal(0,0)
       })
     }else{
       this.ResonSelect = true
@@ -145,14 +163,25 @@ export class DashboardComponent implements OnInit {
   changeTab(t:any){
     if(t == 1){
       this.GetMetricName()
+    }else if(t==4){
+      this.GetPlant()
     }
   }
   PlantTextareaChange(e:any){
-    // PlantTextErr:string = ''
-    // PlantTextErrBol:boolean = false
     this.PlantText = e.target.value
     this.PlantValid(this.PlantText)
   }
+  PlantIdChange(e:any){
+    this.PlantIdName = e.target.value
+    if(this.PlantIdName == ''){
+      this.PlantIdNameErr = 'Please enter plant domain'
+      this.PlantIdNameErrBol = true
+    }else{
+      this.PlantIdNameErr = ''
+      this.PlantIdNameErrBol = false
+    }
+  }
+
   PlantValid(t:any){
     if(t == ''){
       this.PlantTextErr = 'Please add a plant name'
@@ -162,44 +191,61 @@ export class DashboardComponent implements OnInit {
       this.PlantTextErrBol = false
     }
   }
-  selectPlantMetric(e:any, i:any, d:any){
-    if(e.target.checked){
-      this.PlantMetric.push({"plantName": d})
+  selectPlantMetric(e:any){
+    this.PlantMetric = e.target.value
+    if(this.PlantMetric == ''){
+      this.PlantEmptyCheck = 'Please select a Domain'
     }else{
-      this.PlantMetric = this.PlantMetric.filter(j => j.plantName != d)
-    }
-    if(this.PlantMetric == '' && this.PlantText == ''){
-      this.PlantEmptyCheck = false
-    }else if(this.PlantMetric != '' && this.PlantText != ''){
-      this.PlantEmptyCheck = false
-    }else{
-      this.PlantEmptyCheck = true
+      this.PlantEmptyCheck = ''
     }
   }
   open(content:any){
     this.CommonModal.open(content)
   }
   PlantSave(){
-    // this.MessageModal = 'Something went wrong'
-    // document.getElementById('openModal').click()
     if(this.PlantText == ''){
       this.PlantValid(this.PlantText)
+    }else if(this.PlantIdName == '' || this.PlantIdName == undefined){
+      this.PlantIdNameErrBol = true
+      this.PlantIdNameErr = 'Please enter plant domain'
     }else if(this.PlantMetric == ''){
-      this.PlantEmptyCheck = true
+      this.PlantEmptyCheck = "Please select a Domain"
     }else{
-      console.log(this.PlantText, this.PlantMetric)
+      this.Loading = true
+      let d = {
+        "PlantId":this.PlantIdName,
+        "PlantDomain":this.PlantMetric,
+        "PlantName":this.PlantText
+      }
+      
+      this.restApiService.AddNewPlant(d).subscribe((result)=>{
+        this.SuccessModal(4,0)
+      },(error) => {
+        if(error.error.text){
+          this.SuccessModal(error.error.text,0)
+        }else{
+          this.SuccessModal(0,0)
+        }
+      })
     }
   }
 
   GetPlant(){
+    this.PlantData = ''
+    this.Loading = true
     this.restApiService.GetPlantData().subscribe((result) =>{
       this.PlantData = result
-      console.log(this.PlantData)
+      let dmianVal = FilterPlantData(this.PlantData)
+      let newVal = dmianVal.filter((item, index) => dmianVal.indexOf(item) === index)
+      this.PlantDomain = newVal
+      this.Loading = false
+    },(error) => {
+      this.SuccessModal(0,0)
     })  
   }
   
   enablePlant(e:any, i:any, d:any){
-    debugger
+    this.PlantEnableSelect = false
     this.PlantSelected = this.PlantSelected.filter(fi => fi.PlantId != d.plantId)
     this.PlantSelected.push({
       "Flag": e.target.checked ? 1 : 0,
@@ -208,21 +254,41 @@ export class DashboardComponent implements OnInit {
   }
 
   enablePlantSave(){
-    console.log(this.PlantSelected)
-    let d = {
-      "corrsPlantList":this.PlantSelected
+    if(this.PlantSelected != ''){
+      let d = {
+        "getCorrsplantlist":this.PlantSelected
+      }
+      this.Loading = true
+      this.restApiService.EnablePlants(d).subscribe((result) => {
+        this.SuccessModal(3,this.PlantSelected.length)
+        this.PlantSelected = []
+        this.GetPlant()
+      },(error) => {
+        this.SuccessModal(0,0)
+      })
+    }else{
+      this.PlantEnableSelect = true
     }
+  }
+
+  SuccessModal(sts:any, num:any){
     this.MessageSuccessModal = ''
     this.MessageErrorModal = ''
-    this.restApiService.EnablePlants(d).subscribe((result) => {
-      this.MessageSuccessModal = 'Selected Plants are updated successfully!'
-      document.getElementById('openModal').click()
-      this.PlantSelected = []
-    },(error) => {
+    this.Loading = false
+    if(sts == 1){
+      this.MessageSuccessModal = num + ' Record has been updated successfully !'
+    }else if(sts == 2){
+      this.MessageSuccessModal = 'Reason name saved successfully !'
+    }else if(sts == 3){
+      this.MessageSuccessModal = 'Selected records has been updated successfully !'
+    }else if(sts == 4){
+      this.MessageSuccessModal = 'Plant name saved successfully !'
+    }else if(sts == 0){
       this.MessageErrorModal = 'Something went wrong. Please try again later'
-      document.getElementById('openModal').click()
-        debugger
-    })
+    }else{
+      this.MessageErrorModal = sts
+    }
+    document.getElementById('openModal').click()
   }
 
 }

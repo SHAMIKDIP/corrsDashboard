@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment'
 
 export class RestAPIService {
 
+  UserData:any
   private api = environment.url
   httpOptions = {
     headers: new HttpHeaders({
@@ -17,6 +18,20 @@ export class RestAPIService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
+  StoreData(data:any):Observable<any>{
+    this.UserData = data
+    return this.UserData
+  }
+
+  GetData():Observable<any>{
+    return this.UserData
+  }
+
+  GetUserService():Observable<any>{
+    return this.httpClient.get(this.api+'/userservice/getuser')
+    // return this.httpClient.get(this.api+'/userservice/getuser')
+  }
 
   GetPlantId(): Observable<any> {
     return this.httpClient.get(this.api+'/Metricsview/GetAllPlantID')
@@ -35,7 +50,7 @@ export class RestAPIService {
   }
 
   SaveReasonCode(data:any): Observable<any>{
-    return this.httpClient.post(this.api+'/AddReasonCode/SaveReasoncode',data)
+    return this.httpClient.post(this.api+'/AddReasonCode/AddNewReasoncode',data)
   }
 
   EnableReasonSave(data:any):Observable<any>{
@@ -48,6 +63,10 @@ export class RestAPIService {
 
   EnablePlants(data:any):Observable<any>{
     return this.httpClient.put(this.api+'/Corrsplants/plantidUpdate', data)
+  }
+
+  AddNewPlant(data:any):Observable<any>{
+    return this.httpClient.post(this.api+'/Corrsplants/Createnewplant', data)
   }
 
 }

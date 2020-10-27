@@ -5,10 +5,10 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 import { ResonCornerComponent } from './reson-corner/reson-corner.component'
 
 const routes: Routes = [
-  {path:'adduser', component:AddNewUserComponent},
+  // {path:'adduser', component:AddNewUserComponent},
   {path:'addreason', component:DashboardComponent},
   {path:'reasoncorner', component:ResonCornerComponent},
-  {path:'**', pathMatch:'full', redirectTo:'adduser'}
+  {path:'**', pathMatch:'full', redirectTo:'reasoncorner'}
 ];
 
 @NgModule({

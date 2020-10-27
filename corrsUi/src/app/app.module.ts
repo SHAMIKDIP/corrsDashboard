@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ResonCornerComponent } from './reson-corner/reson-corner.component';
 import { CommonModal } from './modal/Modal'
+import { Spinner } from './spinner/Spinner'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CommonModal } from './modal/Modal'
     HeaderComponent,
     FooterComponent,
     ResonCornerComponent,
-    CommonModal
+    CommonModal,
+    Spinner
   ],
   imports: [
     BrowserModule,
